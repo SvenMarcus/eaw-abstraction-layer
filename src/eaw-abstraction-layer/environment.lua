@@ -9,13 +9,13 @@ end
 local function make_eaw_environment()
     env = setmetatable({}, {__index = _G})
 
-    insert_into_env(env, require "finders")
-    insert_into_env(env, require "register_functions")
-    insert_into_env(env, require "story")
-    insert_into_env(env, require "utility_functions")
-    insert_into_env(env, require "spawn")
+    insert_into_env(env, require "eaw-abstraction-layer.finders")
+    insert_into_env(env, require "eaw-abstraction-layer.register_functions")
+    insert_into_env(env, require "eaw-abstraction-layer.story")
+    insert_into_env(env, require "eaw-abstraction-layer.utility_functions")
+    insert_into_env(env, require "eaw-abstraction-layer.spawn")
 
-    env.GlobalValue = require "global_value"
+    env.GlobalValue = require "eaw-abstraction-layer.global_value"
 
     return env
 end

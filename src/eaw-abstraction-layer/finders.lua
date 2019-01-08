@@ -1,8 +1,8 @@
-local metatables = require "metatables"
+local metatables = require "eaw-abstraction-layer.metatables"
 local callback_return_method = metatables.callback_return_method
-local game_object = require "game_object"
-local faction = require "faction"
-local make_type = require "type"
+local game_object = require "eaw-abstraction-layer.game_object"
+local faction = require "eaw-abstraction-layer.faction"
+local make_type = require "eaw-abstraction-layer.type"
 
 local function dummy_faction()
     return faction {name = "Dummy_Faction", is_human = false}
