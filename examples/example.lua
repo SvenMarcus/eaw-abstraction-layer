@@ -65,7 +65,6 @@ eaw_env.init("./examples/Mod")
 local function test_eaw_module()
     configure_environment()
 
-    
     eaw_env.run(function()
         require "eaw_module"
         my_eaw_function()

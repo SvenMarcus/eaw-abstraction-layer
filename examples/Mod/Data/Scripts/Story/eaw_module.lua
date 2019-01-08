@@ -8,6 +8,10 @@ function my_eaw_function()
 
         if not owner.Is_Human() then
             my_table.sub.change_owner_and_spawn_stuff(planet)
+            ScriptExit()
         end
+
     end
+
+    DebugMessage("Reached end of function")
 end

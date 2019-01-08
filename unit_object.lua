@@ -1,4 +1,5 @@
 local game_object = require "game_object"
+local faction = require "faction"
 local metatables = require "metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
@@ -17,5 +18,19 @@ local function unit_object(tab)
     obj.Teleport_And_Face = callback_method("Teleport_And_Face")
     obj.Turn_To_Face = callback_method("Turn_To_Face")
 
+    obj.Get_Position = callback_return_method("Get_Position")
+    obj.Get_Planet_Location = callback_return_method("Get_Planet_Location")
+    function obj.Get_Planet_Location.return_value()
+        return game_object { 
+            name = "DummyPlanet",
+            owner = faction {
+                name = "DummyFaction",
+                is_human = false
+            }
+        }
+    end
+
     return obj
 end
+
+return unit_object

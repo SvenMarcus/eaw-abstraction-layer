@@ -7,7 +7,7 @@ local function insert_into_env(env, tab)
 end
 
 local function make_eaw_environment()
-    local env = setmetatable({}, {__index = _G})
+    env = setmetatable({}, {__index = _G})
 
     insert_into_env(env, require "finders")
     insert_into_env(env, require "register_functions")
@@ -23,7 +23,6 @@ end
 local function init(mod_path)
     print("Initializing environment...")
     env = make_eaw_environment()
-    _g_env_backup = make_eaw_environment()
 
 
     local scripts = mod_path.."/Data/Scripts/"
@@ -46,11 +45,14 @@ end
 local function run(func, ...)
     env = make_eaw_environment()
     for k, v in pairs(env) do
-        print(k)
         _G[k] = v
     end
 
-    func(...)
+    local runner = coroutine.wrap(function(...)
+        func(...)
+    end)
+
+    runner(...)
 
     for k, v in pairs(env) do
         _G[k] = nil
@@ -59,7 +61,5 @@ end
 
 return {
     init = init,
-    -- import = import,
-    -- restore_environment = restore_environment,
     run = run
 }

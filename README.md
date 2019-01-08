@@ -1,16 +1,20 @@
 # Empire at War Abstraction Layer
 
+- [Empire at War Abstraction Layer](#empire-at-war-abstraction-layer)
+  - [About](#about)
+  - [Usage](#usage)
+  - [Currently available EaW functions and types](#currently-available-eaw-functions-and-types)
+    - [Functions](#functions)
+    - [Types](#types)
+  - [Configuration](#configuration)
+
 ## About
 
 The Empire at War Abstraction Layer aims to be a drop in replacement for Empire at War's Lua functions, so Lua modules can be executed without launching the game itself. This not only saves time, but also helps with debugging, since the abstraction layer provides additional functioniality to configure the behavior of EaW's functions. The end goal is to provide a set of functions that can be used together in a unit testing framework like `busted`.
 
-
-
 ## Usage
 
 As of now, the library needs to be used on files that don't have any connection to the base PG Lua files. That means you can neither `require()` a PG Lua file directly nor a file that `require`s a PG Lua file (and so on...) . You will need to organize your code into decoupled modules with minimal dependencies to achieve that.
-
-
 
 To use the library set the path to your mod folder, `require()` a file and choose an entry function.
 
@@ -32,8 +36,6 @@ test_eaw_module()
 
 If your code uses EaW's built-in global functions you will need to configure them as explained in the following sections.
 
-
-
 ## Currently available EaW functions and types
 
 ### Functions
@@ -54,6 +56,8 @@ If your code uses EaW's built-in global functions you will need to configure the
 
 - Get_Story_Plot
 
+- Get_Game_Mode
+
 - Register_Timer
 
 - Register_Death_Event
@@ -70,7 +74,9 @@ If your code uses EaW's built-in global functions you will need to configure the
 
 - TestValid
 
+- ScriptExit
 
+  - Unlike all other replacement functions ScriptExit is an actual Lua function and cannot receive a callback function
 
 ### Types
 
@@ -120,6 +126,10 @@ If your code uses EaW's built-in global functions you will need to configure the
 
   - Turn_To_Face
 
+  - Get_Planet_Location
+
+  - Get_Position
+
 - plot:
 
   - Available functions:
@@ -134,13 +144,9 @@ If your code uses EaW's built-in global functions you will need to configure the
 
   - Set_Reward_Parameter
 
-
-
 ## Configuration
 
 All functions and types are implemented as callable tables that can be configured to use a callback function when they're being called or to return a specified value.
-
-
 
 If, for example, you want to configure `FindPlanet` to return a certain game object and print a message when being called you can do so like this:
 
@@ -155,7 +161,7 @@ function finders.FindPlanet.return_value(planet_name)
         owner = faction {
             name = "Empire",
             is_human = true
-        }               
+        }
     }
 end
 
@@ -164,8 +170,7 @@ function finders.FindPlanet.callback(planet_name)
 end
 ```
 
-
-
 Since `return_value()` is a function instead of a simple field it allows you to apply more complex logic to a return value.
 
 Functions that are expected to return something will throw a warning if you don't provide a `return_value()` function. However, they will not crash the script. The return value is determined before the `callback()` function is called.
+Most functions provide a default return value instead of returning nil.
