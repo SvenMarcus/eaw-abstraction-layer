@@ -1,7 +1,8 @@
 package = "eaw-abstraction-layer"
-version = "scm-1"
+version = "0.1-0"
 source = {
-   url = "https://github.com/SvenMarcus/eaw-abstraction-layer"
+   url = "git://github.com/SvenMarcus/eaw-abstraction-layer",
+   tag = "v0.10"
 }
 description = {
    detailed = [[
