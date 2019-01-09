@@ -8,6 +8,7 @@
     - [Functions](#functions)
     - [Types](#types)
   - [Configuration](#configuration)
+  - [Contributing](#contributing)
 
 ## About
 
@@ -183,3 +184,27 @@ Since `return_value()` is a function instead of a simple field it allows you to 
 
 Functions that are expected to return something will throw a warning if you don't provide a `return_value()` function. However, they will not crash the script. The return value is determined before the `callback()` function is called.
 Most functions provide a default return value instead of returning nil.
+
+
+## Contributing
+
+It's actually really easy to contribute to this project, you don't have to be a Lua expert.
+In `metatables.lua` are the only two possible candidates for function definitions: `callback_method(func_name)` which is for functions that don't return a value and `callback_return_method(func_name)` that is used for functions that do return something.
+When you create a reference for a new EaW function either place it in a fitting existing file or create a new one.
+A function reference could look like this:
+
+```lua
+local metatables = require "eaw-abstraction-layer.metatables"
+local callback_method = metatables.callback_method
+local callback_return_method = metatables.callback_return_method
+
+local My_New_EaW_Function_Reference = callback_return_method("My_New_EaW_Function_Reference")
+function My_New_EaW_Function_Reference.return_value()
+    local something = 0
+    return something
+end
+
+return My_New_EaW_Function_Reference
+```
+
+Use the field `return_value()` to implement a default return value for that function. To the end user this is more useful than no default return value, because they won't have to define return values for every function this way.
