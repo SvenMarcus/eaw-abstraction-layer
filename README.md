@@ -2,6 +2,7 @@
 
 - [Empire at War Abstraction Layer](#empire-at-war-abstraction-layer)
   - [About](#about)
+  - [Installation](#installation)
   - [Usage](#usage)
   - [Currently available EaW functions and types](#currently-available-eaw-functions-and-types)
     - [Functions](#functions)
@@ -11,6 +12,14 @@
 ## About
 
 The Empire at War Abstraction Layer aims to be a drop in replacement for Empire at War's Lua functions, so Lua modules can be executed without launching the game itself. This not only saves time, but also helps with debugging, since the abstraction layer provides additional functioniality to configure the behavior of EaW's functions. The end goal is to provide a set of functions that can be used together in a unit testing framework like `busted`.
+
+## Installation
+
+Either clone this repository or get it on luarocks using:
+
+```
+luarocks install eaw-abstraction-layer
+```
 
 ## Usage
 
