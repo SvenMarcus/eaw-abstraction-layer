@@ -208,3 +208,8 @@ return My_New_EaW_Function_Reference
 ```
 
 Use the field `return_value()` to implement a default return value for that function. To the end user this is more useful than no default return value, because they won't have to define return values for every function this way.
+Finally, if you have created a new file, all you need to is add it to the `make_eaw_environment()` function in `environment.lua` like this:
+
+```lua
+insert_into_env(env, require "eaw-abstraction-layer.my_file_name")
+```
