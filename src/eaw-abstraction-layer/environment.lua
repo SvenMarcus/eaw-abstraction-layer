@@ -1,4 +1,5 @@
 local env = {}
+local original_require = require
 
 local function insert_into_env(env, tab)
     for func_name, func in pairs(tab) do
@@ -18,6 +19,10 @@ local function make_eaw_environment()
     env.GlobalValue = require "eaw-abstraction-layer.global_value"
 
     return env
+end
+
+local function register_busted_matchers()
+    require "eaw-abstraction-layer.busted_matchers"
 end
 
 local function init(mod_path)
@@ -42,11 +47,21 @@ local function init(mod_path)
     end
 end
 
-local function run(func, ...)
-    env = make_eaw_environment()
-    for k, v in pairs(env) do
-        _G[k] = v
+local function create_g_backup()
+    local _G_backup = {}
+
+    for k, v in pairs(_G) do
+        _G_backup[k] = v
     end
+
+    return _G_backup
+end
+
+local function run(func, ...)
+    local _G_backup = create_g_backup()
+
+    env = make_eaw_environment()
+    insert_into_env(_G, env)
 
     local runner = coroutine.wrap(function(...)
         func(...)
@@ -54,12 +69,11 @@ local function run(func, ...)
 
     runner(...)
 
-    for k, v in pairs(env) do
-        _G[k] = nil
-    end
+    _G = _G_backup
 end
 
 return {
+    register_busted_matchers = register_busted_matchers,
     init = init,
     run = run
 }

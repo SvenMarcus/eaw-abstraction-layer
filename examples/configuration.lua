@@ -24,6 +24,11 @@ local planets = {
     hoth = game_object {
         name = "Hoth",
         owner = players["REBEL"]
+    },
+
+    kuat = game_object {
+        name = "Kuat",
+        owner = players["REBEL"]
     }
 }
 
@@ -45,10 +50,15 @@ local function configure_environment()
         print("\nChanged owner of Hoth to "..new_owner.Get_Faction_Name())
     end
 
+    function planets.kuat.Change_Owner.callback(new_owner)
+        print("\nChanged owner of Kuat to "..new_owner.Get_Faction_Name())
+    end
+
     function finders.FindPlanet.Get_All_Planets.return_value()
         return {
             planets.coruscant,
-            planets.hoth
+            planets.hoth,
+            planets.kuat
         }
     end
 

@@ -13,28 +13,28 @@ local function dummy_game_object()
 end
 
 local Find_First_Object = callback_return_method("Find_First_Object")
-function Find_First_Object.return_value()
-    return dummy_game_object()
+function Find_First_Object.return_value(type_name)
+    return game_object { name = type_name, owner = dummy_faction() }
 end
 
 local Find_All_Objects_Of_Type = callback_return_method("Find_All_Objects_Of_Type")
 function Find_All_Objects_Of_Type.return_value()
-    return {dummy_game_object()}
+    return { dummy_game_object() }
 end
 
 local Find_Nearest = callback_return_method("Find_Nearest")
-function Find_Nearest.return_value()
-    return dummy_game_object()
+function Find_Nearest.return_value(type_name)
+    return game_object { name = type_name, owner = dummy_faction() }
 end
 
 local FindPlanet = callback_return_method("FindPlanet")
-function FindPlanet.return_value()
-    return dummy_game_object()
+function FindPlanet.return_value(planet_name)
+    return game_object { name = planet_name, owner = dummy_faction() }
 end
 
 FindPlanet.Get_All_Planets = callback_return_method("Get_All_Planets")
 function FindPlanet.Get_All_Planets.return_value()
-    return {dummy_game_object()}
+    return { dummy_game_object() }
 end
 
 local Find_Player = callback_return_method("Find_Player")

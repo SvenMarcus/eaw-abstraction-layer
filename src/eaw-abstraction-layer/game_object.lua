@@ -3,7 +3,11 @@ local metatables = require "eaw-abstraction-layer.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
-
+-- @usage
+-- game_object {
+--     name = "Type_Name",
+--     owner = faction_object
+-- }
 local function game_object(tab)
 
     local obj = setmetatable({}, {
