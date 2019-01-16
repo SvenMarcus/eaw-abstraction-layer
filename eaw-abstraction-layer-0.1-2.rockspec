@@ -32,7 +32,6 @@ build = {
       ["eaw-abstraction-layer.functions.story"] = "src/eaw-abstraction-layer/functions/story.lua",
       ["eaw-abstraction-layer.functions.utilities"] = "src/eaw-abstraction-layer/functions/utilities.lua",
       ["eaw-abstraction-layer.global_value"] = "src/eaw-abstraction-layer/global_value.lua",
-      ["eaw-abstraction-layer.luassert_matchers"] = "src/eaw-abstraction-layer/luassert_matchers.lua",
       ["eaw-abstraction-layer.types.faction"] = "src/eaw-abstraction-layer/types/faction.lua",
       ["eaw-abstraction-layer.types.game_object"] = "src/eaw-abstraction-layer/types/game_object.lua",
       ["eaw-abstraction-layer.types.story"] = "src/eaw-abstraction-layer/types/story.lua",
