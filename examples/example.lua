@@ -1,12 +1,12 @@
-local eaw_env = require "eaw-abstraction-layer.environment"
+local eaw = require "eaw-abstraction-layer"
 local configure_environment = require "./examples/configuration"
 
-eaw_env.init("./examples/Mod")
+eaw.init("./examples/Mod")
 
 local function test_eaw_module()
     configure_environment()
 
-    eaw_env.run(function()
+    eaw.run(function()
         require "eaw_module"
         my_eaw_function()
     end)

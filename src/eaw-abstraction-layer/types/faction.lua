@@ -1,4 +1,4 @@
-local metatables = require "eaw-abstraction-layer.metatables"
+local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 

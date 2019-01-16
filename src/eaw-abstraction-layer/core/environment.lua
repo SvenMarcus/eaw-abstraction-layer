@@ -1,0 +1,88 @@
+local sandbox = require "eaw-abstraction-layer.core.sandbox"
+
+local env = nil
+local _G_backup = {}
+
+
+local function insert_into_env(env, tab)
+    for func_name, func in pairs(tab) do
+        env[func_name] = func
+    end
+end
+
+local make_finders = require "eaw-abstraction-layer.functions.finders"
+local make_register_functions = require "eaw-abstraction-layer.functions.register_functions"
+local make_story = require "eaw-abstraction-layer.functions.story"
+local make_utilities = require "eaw-abstraction-layer.functions.utilities"
+local make_spawn = require "eaw-abstraction-layer.functions.spawn"
+
+
+local function make_eaw_environment()
+    local env = {}
+
+    insert_into_env(env, make_finders())
+    insert_into_env(env, make_register_functions())
+    insert_into_env(env, make_story())
+    insert_into_env(env, make_utilities())
+    insert_into_env(env, make_spawn())
+
+    env.GlobalValue = require "eaw-abstraction-layer.global_value"
+    return env
+end
+
+local function init(mod_path)
+    env = make_eaw_environment()
+    if mod_path then
+        local scripts = mod_path.."/Data/Scripts/"
+        local script_folders = {
+            scripts.."AI/",
+            scripts.."Library/",
+            scripts.."Story/",
+            scripts.."GameObject/",
+            scripts.."Evaluators/",
+            scripts.."Miscellaneous/",
+            scripts.."FreeStore/",
+            scripts.."Interventions/"
+        }
+
+        for _, path in pairs(script_folders) do
+            package.path = package.path..";"..path.."?.lua"
+        end
+    end
+end
+
+local function prepare_environment()
+    if not env then
+        env = make_eaw_environment()
+    end
+
+    insert_into_env(_G, env)
+end
+
+local function reset_environment()
+    for k, v in pairs(env) do
+        _G[env] = nil
+    end
+
+    env = make_eaw_environment()
+end
+
+local function run(func, ...)
+    prepare_environment()
+    sandbox.run(func, ...)
+    reset_environment()
+end
+
+return {
+    init = init,
+    run = run,
+    current_environment = setmetatable({}, { __index = function(_, k)
+        if not env then
+            env = make_eaw_environment()
+        end
+        return env[k]
+    end,
+    __newindex = function(_, k, v)
+        env[k] = v
+    end})
+}

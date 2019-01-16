@@ -8,11 +8,12 @@
     - [Functions](#functions)
     - [Types](#types)
   - [Configuration](#configuration)
+  - [Writing tests](#writing-tests)
   - [Contributing](#contributing)
 
 ## About
 
-The Empire at War Abstraction Layer aims to be a drop in replacement for Empire at War's Lua functions, so Lua modules can be executed without launching the game itself. This not only saves time, but also helps with debugging, since the abstraction layer provides additional functioniality to configure the behavior of EaW's functions. The end goal is to provide a set of functions that can be used together in a unit testing framework like `busted`.
+The Empire at War Abstraction Layer aims to be a drop in replacement for Empire at War's Lua functions, so Lua modules can be executed without launching the game itself. This not only saves time, but also helps with debugging, since the abstraction layer provides additional functioniality to configure the behavior of EaW's functions. The end goal is to provide a set of functions that can be used together in a unit testing framework. It is currently recommended to use `u-test` as a testing framework (https://github.com/IUdalov/u-test). Lua's most popular testing framework `busted` is unfortunately not compatible at the the current time.
 
 ## Installation
 
@@ -29,12 +30,12 @@ As of now, the library needs to be used on files that don't have any connection 
 To use the library set the path to your mod folder, `require()` a file and choose an entry function.
 
 ```lua
-local eaw_env = require "environment"
+local eaw = require "eaw-abstraction-layer"
 
-eaw_env.init("./examples/Mod")
+eaw.init("./examples/Mod")
 
 local function test_eaw_module()
-    eaw_env.run(function()
+    eaw.run(function()
         require "eaw_module"
         my_eaw_function()
     end)
@@ -161,11 +162,12 @@ All functions and types are implemented as callable tables that can be configure
 If, for example, you want to configure `FindPlanet` to return a certain game object and print a message when being called you can do so like this:
 
 ```lua
-local finders = require "finders"
-local game_object = require "game_object"
-local faction = require "faction"
+local eaw = require "eaw-abstraction-layer"
+local env = eaw.environment
+local game_object = eaw.types.game_object
+local faction = eaw.types.faction
 
-function finders.FindPlanet.return_value(planet_name)
+function env.FindPlanet.return_value(planet_name)
     return game_object {
         name = planet_name,
         owner = faction {
@@ -175,7 +177,7 @@ function finders.FindPlanet.return_value(planet_name)
     }
 end
 
-function finders.FindPlanet.callback(planet_name)
+function env.FindPlanet.callback(planet_name)
     print("FindPlanet was called with "..planet_name)
 end
 ```
@@ -185,31 +187,60 @@ Since `return_value()` is a function instead of a simple field it allows you to 
 Functions that are expected to return something will throw a warning if you don't provide a `return_value()` function. However, they will not crash the script. The return value is determined before the `callback()` function is called.
 Most functions provide a default return value instead of returning nil.
 
+## Writing tests
+
+The following section describes unit testing with the `u-test` testing framework. Tests can simply be defined using the `test` table as shown below:
+
+```lua
+test.test_suite_name.test_name = function()
+    local eaw = require "eaw-abstraction-layer"
+    local type = eaw.types.type
+    local game_object = eaw.types.game_object
+    local faction = eaw.types.faction
+
+    local called_spawn_unit = false
+    function eaw.environment.Spawn_Unit.callback()
+        called_spawn_unit = true
+    end
+
+    eaw.run(function()
+        Spawn_Unit(type("DummyType"), game_object { name = "DummyPlanet" }, faction { name = "DummyFaction" })
+    end)
+
+    test.is_true(called_spawn_unit)
+end
+```
+
+Due to a problem with the current sandboxing technique for the EaW environment, tests calling `eaw.run()` must be defined within a test suite other than the root test suite. Read more about testing with `u-test` on their github site: https://github.com/IUdalov/u-test
 
 ## Contributing
 
 It's actually really easy to contribute to this project, you don't have to be a Lua expert.
 In `metatables.lua` are the only two possible candidates for function definitions: `callback_method(func_name)` which is for functions that don't return a value and `callback_return_method(func_name)` that is used for functions that do return something.
-When you create a reference for a new EaW function either place it in a fitting existing file or create a new one.
+When you create a reference for a new EaW function either place it in a fitting existing file or create a new one in `eaw-abstraction-layer/functions`.
 A function reference could look like this:
 
 ```lua
-local metatables = require "eaw-abstraction-layer.metatables"
+local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
-local My_New_EaW_Function_Reference = callback_return_method("My_New_EaW_Function_Reference")
-function My_New_EaW_Function_Reference.return_value()
-    local something = 0
-    return something
+local my_custom_function_creator()
+    local My_New_EaW_Function_Reference = callback_return_method("My_New_EaW_Function_Reference")
+    function My_New_EaW_Function_Reference.return_value()
+        local something = 0
+        return something
+    end
+
+    return { My_New_EaW_Function_Reference = My_New_EaW_Function_Reference }
 end
 
-return My_New_EaW_Function_Reference
+return my_custom_function_creator
 ```
 
-Use the field `return_value()` to implement a default return value for that function. To the end user this is more useful than no default return value, because they won't have to define return values for every function this way.
+Use the field `return_value()` to implement a default return value for that function. To the end user this is more useful than no default return value, because they won't have to define return values for every function this way. Make sure that your new function references are wrapped in a creator function as shown above. The creator function should be the files' return value.
 Finally, if you have created a new file, all you need to is add it to the `make_eaw_environment()` function in `environment.lua` like this:
 
 ```lua
-insert_into_env(env, require "eaw-abstraction-layer.my_file_name")
+insert_into_env(env, require "eaw-abstraction-layer.functions.my_file_name" ())
 ```

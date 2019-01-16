@@ -1,4 +1,4 @@
-local metatables = require "eaw-abstraction-layer.metatables"
+local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
@@ -21,15 +21,7 @@ local function plot()
     return obj
 end
 
-local Get_Story_Plot = callback_return_method("Get_Story_Plot")
-function Get_Story_Plot.return_value()
-    return plot()
-end;
-
-
 return {
-    event = event,
     plot = plot,
-    Get_Story_Plot = Get_Story_Plot,
-    Story_Event = callback_method("Story_Event")
+    event =event
 }

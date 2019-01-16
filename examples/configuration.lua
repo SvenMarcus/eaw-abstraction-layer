@@ -1,7 +1,7 @@
-local finders = require "eaw-abstraction-layer.finders"
-local faction = require "eaw-abstraction-layer.faction"
-local game_object = require "eaw-abstraction-layer.game_object"
-local spawn = require "eaw-abstraction-layer.spawn"
+local eal = require "eaw-abstraction-layer"
+local environment = eal.environment
+local faction = eal.types.faction
+local game_object = eal.types.game_object
 
 local players = {
     ["EMPIRE"] = faction {
@@ -34,11 +34,11 @@ local planets = {
 
 local function configure_environment()
 
-    function finders.Find_Player.return_value(faction_name)
+    function environment.Find_Player.return_value(faction_name)
         return players[string.upper(faction_name)]
     end
 
-    function finders.Find_Object_Type.callback(faction_name)
+    function environment.Find_Object_Type.callback(faction_name)
         print("\nFind_Object_Type was called with "..faction_name)
     end
 
@@ -54,7 +54,7 @@ local function configure_environment()
         print("\nChanged owner of Kuat to "..new_owner.Get_Faction_Name())
     end
 
-    function finders.FindPlanet.Get_All_Planets.return_value()
+    function environment.FindPlanet.Get_All_Planets.return_value()
         return {
             planets.coruscant,
             planets.hoth,
@@ -62,7 +62,7 @@ local function configure_environment()
         }
     end
 
-    function spawn.Spawn_Unit.callback(obj_type, location, owner)
+    function environment.Spawn_Unit.callback(obj_type, location, owner)
         print("\nSpawned "..obj_type.Get_Name().." on "..location.Get_Type().Get_Name().." for "..owner.Get_Faction_Name())
     end
 
