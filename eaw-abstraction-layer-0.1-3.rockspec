@@ -1,8 +1,8 @@
 package = "eaw-abstraction-layer"
-version = "0.1-2"
+version = "0.1-3"
 source = {
    url = "git://github.com/SvenMarcus/eaw-abstraction-layer",
-   tag = "v0.12"
+   tag = "v0.13"
 }
 description = {
    detailed = [[
@@ -17,7 +17,7 @@ description = {
    license = "MIT"
 }
 dependencies = {
-   "u-test >= 1.1"
+   "penlight >= 1.5.4"
 }
 build = {
    type = "builtin",
@@ -36,6 +36,9 @@ build = {
       ["eaw-abstraction-layer.types.game_object"] = "src/eaw-abstraction-layer/types/game_object.lua",
       ["eaw-abstraction-layer.types.story"] = "src/eaw-abstraction-layer/types/story.lua",
       ["eaw-abstraction-layer.types.type"] = "src/eaw-abstraction-layer/types/type.lua",
-      ["eaw-abstraction-layer.types.unit_object"] = "src/eaw-abstraction-layer/types/unit_object.lua"
+      ["eaw-abstraction-layer.types.unit_object"] = "src/eaw-abstraction-layer/types/unit_object.lua",
+      ["eaw-abstraction-layer.util.custom_assertions"] = "src/eaw-abstraction-layer/util/custom_assertions.lua",
+      ["eaw-abstraction-layer.util.test_runner"] = "src/eaw-abstraction-layer/util/test_runner.lua",
+      ["eaw-abstraction-layer.util.u-test"] = "src/eaw-abstraction-layer/util/u-test.lua"
    }
 }

@@ -1,6 +1,6 @@
 local eaw = require "eaw-abstraction-layer"
 
-test.environment_reset["When requiring a file inside run -> should not be in package.loaded after run"] = function()
+test["When requiring a file inside run -> should not be in package.loaded after run"] = function()
     eaw.run(function()
         local stub = require "./test/file_stub"
     end)
@@ -8,7 +8,7 @@ test.environment_reset["When requiring a file inside run -> should not be in pac
     test.is_nil(package.loaded["./test/file_stub"])
 end
 
-test.environment_reset["When setting callback on function in initiated environment -> then running twice -> should only call callback once"] = function()
+test["When setting callback on function in initiated environment -> then running twice -> should only call callback once"] = function()
     local types = eaw.types
     local type = types.type
     local faction = types.faction

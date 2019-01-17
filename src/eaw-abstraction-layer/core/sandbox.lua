@@ -3,7 +3,7 @@ local table_lookup = {}
 local function deep_restore(tab, backup)
     table_lookup[tab] = true
     for k, v in pairs(tab) do
-        if not backup[k] then
+        if backup[k] == nil then
             tab[k] = nil
         elseif type(v) == "table" and not table_lookup[v] then
             deep_restore(v, backup[k])
