@@ -4,6 +4,11 @@ local function ends_with(str, ending)
     return ending == "" or str:sub(-#ending) == ending
 end
 
+if #arg < 1 then
+    print("Expected path to project folder")
+    os.exit(1)
+end
+
 local current_dir = arg[1]
 arg[1] = nil
 

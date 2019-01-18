@@ -40,5 +40,11 @@ build = {
       ["eaw-abstraction-layer.util.custom_assertions"] = "src/eaw-abstraction-layer/util/custom_assertions.lua",
       ["eaw-abstraction-layer.util.test_runner"] = "src/eaw-abstraction-layer/util/test_runner.lua",
       ["eaw-abstraction-layer.util.u-test"] = "src/eaw-abstraction-layer/util/u-test.lua"
+   },
+
+   install = {
+      bin = {
+         eaw_test_runner = "bin/eaw_test.lua"
+      }
    }
 }
