@@ -1,5 +1,7 @@
 local basic_callback_metatable = {
     __call = function(t, ...)
+        t.calls = t.calls + 1
+
         if not t.callback then
             return
         end
@@ -10,6 +12,8 @@ local basic_callback_metatable = {
 
 local callback_return_metatable = {
     __call = function(t, ...)
+        t.calls = t.calls + 1
+
         local return_value
         if t.return_value then
             return_value = t.return_value(...)
@@ -26,11 +30,11 @@ local callback_return_metatable = {
 }
 
 local function callback_method(func_name)
-    return setmetatable({func_name = func_name}, basic_callback_metatable)
+    return setmetatable({func_name = func_name, calls = 0}, basic_callback_metatable)
 end
 
 local function callback_return_method(func_name)
-    return setmetatable({func_name = func_name}, callback_return_metatable)
+    return setmetatable({func_name = func_name, calls = 0}, callback_return_metatable)
 end
 
 return {

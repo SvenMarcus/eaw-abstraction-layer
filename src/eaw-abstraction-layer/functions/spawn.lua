@@ -1,3 +1,4 @@
+local type = require "eaw-abstraction-layer.types.type"
 local unit_object = require "eaw-abstraction-layer.types.unit_object"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_return_method = metatables.callback_return_method
@@ -17,9 +18,26 @@ local function spawn()
         return { unit }
     end
 
+    local SpawnList = callback_return_method("SpawnList")
+    function SpawnList.return_value(type_list, entry_marker, player, allow_ai_usage, delete_after_scenario)
+        local return_tab = {}
+        for _, type_name in pairs(type_list) do
+            table.insert(
+                return_tab,
+                unit_object {
+                    name = type(type_name),
+                    owner = player
+                }
+            )
+        end
+
+        return return_tab
+    end
+
+
     return {
-        Spawn_Unit = Spawn_Unit,
-        SpawnList = callback_return_method("SpawnList")
+        Spawn_Unit = Spawn_Unit;
+        SpawnList = SpawnList;
     }
 end
 

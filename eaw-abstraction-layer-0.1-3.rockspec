@@ -37,9 +37,10 @@ build = {
       ["eaw-abstraction-layer.types.story"] = "src/eaw-abstraction-layer/types/story.lua",
       ["eaw-abstraction-layer.types.type"] = "src/eaw-abstraction-layer/types/type.lua",
       ["eaw-abstraction-layer.types.unit_object"] = "src/eaw-abstraction-layer/types/unit_object.lua",
-      ["eaw-abstraction-layer.util.custom_assertions"] = "src/eaw-abstraction-layer/util/custom_assertions.lua",
-      ["eaw-abstraction-layer.util.test_runner"] = "src/eaw-abstraction-layer/util/test_runner.lua",
-      ["eaw-abstraction-layer.util.u-test"] = "src/eaw-abstraction-layer/util/u-test.lua"
+      ["eaw-abstraction-layer.cli.create_test_env"] = "src/eaw-abstraction-layer/cli/create_test_env.lua",
+      ["eaw-abstraction-layer.cli.custom_assertions"] = "src/eaw-abstraction-layer/cli/custom_assertions.lua",
+      ["eaw-abstraction-layer.cli.test_runner"] = "src/eaw-abstraction-layer/cli/test_runner.lua",
+      ["eaw-abstraction-layer.cli.u-test"] = "src/eaw-abstraction-layer/cli/u-test.lua"
    },
 
    install = {

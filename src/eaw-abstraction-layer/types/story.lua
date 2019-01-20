@@ -18,6 +18,10 @@ local function plot()
         return event()
     end
 
+    obj.Activate = callback_method("Activate")
+    obj.Suspend = callback_method("Suspend")
+    obj.Reset = callback_method("Reset")
+
     return obj
 end
 
