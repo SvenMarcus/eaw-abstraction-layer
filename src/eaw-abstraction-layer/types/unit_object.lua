@@ -35,18 +35,51 @@ local function unit_object(tab)
     obj.Teleport = callback_method("Teleport")
     obj.Teleport_And_Face = callback_method("Teleport_And_Face")
     obj.Turn_To_Face = callback_method("Turn_To_Face")
-	
-	
+
+
 	obj.Are_Engines_Online = callback_return_method("Are_Engines_Online")
+	function obj.Are_Engines_Online.return_value()
+		return true
+	end
+
 	obj.Get_Hull = callback_return_method("Get_Hull")
+	function obj.Get_Hull.return_value()
+		return 1.0
+	end
+
 	obj.Get_Parent_Object = callback_return_method("Get_Parent_Object")
+	function obj.Get_Parent_Object.return_value()
+		return game_object {
+			name = "DummyObject",
+			owner = faction {
+                name = "DummyFaction",
+                is_human = false
+            }
+		}
+	end
+
 	obj.Get_Shield = callback_return_method("Get_Shield")
+	function obj.Get_Shield.return_value()
+		return 1.0
+	end
+
 	obj.Has_Ability = callback_return_method("Has_Ability")
+	function obj.Has_Ability.return_value()
+		return true
+	end
+
 	obj.Is_Ability_Active = callback_return_method("Is_Ability_Active")
+	function obj.Is_Ability_Active.return_value()
+		return false
+	end
+
 	obj.Is_Under_Effects_Of_Ability = callback_return_method("Is_Under_Effects_Of_Ability")
-    obj.Get_Planet_Location = callback_return_method("Get_Planet_Location")
-    obj.Get_Position = callback_return_method("Get_Position")
-    function obj.Get_Planet_Location.return_value()
+	function obj.Is_Under_Effects_Of_Ability.return_value()
+		return false
+	end
+
+	obj.Get_Planet_Location = callback_return_method("Get_Planet_Location")
+	function obj.Get_Planet_Location.return_value()
         return game_object { 
             name = "DummyPlanet",
             owner = faction {
@@ -54,7 +87,9 @@ local function unit_object(tab)
                 is_human = false
             }
         }
-    end
+	end
+
+	obj.Get_Position = callback_return_method("Get_Position")
 
     return obj
 end
