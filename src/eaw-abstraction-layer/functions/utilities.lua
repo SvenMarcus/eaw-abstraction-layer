@@ -18,13 +18,34 @@ local function utilities()
         coroutine.yield()
     end
 
+    -- GameRandom is a special case. It can be called as a function or as an object with the method GetFloat()
+    local function GameRandom()
+        local random_mt = {
+            __call = callback_return_method("Game_Random")
+        }
+
+        function random_mt.__call.return_value(min, max)
+            return min
+        end
+
+        local obj = setmetatable({}, random_mt)
+
+        obj.GetFloat = callback_return_method("GetFloat")
+        function obj.GetFloat.return_value()
+            return 0
+        end
+
+        return obj
+    end
+
     return {
         BlockOnCommand = callback_method("BlockOnCommand");
         Sleep = callback_method("Sleep");
         TestValid = TestValid,
         Get_Game_Mode = Get_Game_Mode,
         ScriptExit = ScriptExit,
-        DebugMessage = function(...) print(...) end
+        GameRandom = GameRandom(),
+        DebugMessage = function(...) string.format(...) end
     }
 end
 
