@@ -3,6 +3,7 @@
 - [Empire at War Abstraction Layer](#empire-at-war-abstraction-layer)
   - [About](#about)
   - [Installation](#installation)
+    - [Installation on Windows](#installation-on-windows)
   - [Usage](#usage)
     - [Project setup](#project-setup)
     - [Running tests](#running-tests)
@@ -29,7 +30,24 @@ luarocks install eaw-abstraction-layer
 
 This will install the necessary Lua files, an executable called `eaw_test_runner` to run your unit tests  as well as `penlight`, a powerful set of libraries that allows easy handling of files and directories.
 
+### Installation on Windows
 
+If you are on Windows it can be tricky to get `luarocks` to run. I recommend installing the Windows Subsystem for Linux (WSL) with Ubuntu:
+https://docs.microsoft.com/en-us/windows/wsl/install-win10
+
+Using this you will gain access to a Linux system with all its repositories. Setting up a Lua development environment here is much easier. To get up and running type the following commands in your Linux terminal:
+
+```bash
+sudo apt install luajit
+sudo apt install luarocks
+luarocks install eaw-abstraction-layer
+```
+
+From the terminal you can access your Windows drive through the `mnt` folder:
+
+```bash
+cd /mnt/c/Program Files (x86)/...
+```
 
 ## Usage
 
