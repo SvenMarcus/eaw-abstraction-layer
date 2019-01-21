@@ -1,8 +1,8 @@
 package = "eaw-abstraction-layer"
-version = "0.1-3"
+version = "0.2-0"
 source = {
    url = "git://github.com/SvenMarcus/eaw-abstraction-layer",
-   tag = "v0.13"
+   tag = "v0.20"
 }
 description = {
    detailed = [[
