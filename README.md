@@ -71,7 +71,7 @@ Of course you can also set up a similar folder structure manually.
 
 ### Running tests
 
-`eaw_test_runner` can locate and run all tests in a folder.  Run it in the terminal using:
+`eaw_test_runner` can locate and run all tests in a folder. Only files ending with "_spec.lua" count as test files. Run it in the terminal using:
 
 ```bash
 eaw_test_runner <path>
