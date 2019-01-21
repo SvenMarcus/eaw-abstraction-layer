@@ -16,8 +16,6 @@ local function game_object(tab)
         end;
     })
 
-    obj.Despawn = callback_method("Despawn")
-
     obj.Get_Owner = callback_return_method("Get_Owner")
     function obj.Get_Owner.return_value()
         return tab.owner

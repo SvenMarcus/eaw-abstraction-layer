@@ -36,6 +36,8 @@ local function unit_object(tab)
     obj.Teleport_And_Face = callback_method("Teleport_And_Face")
     obj.Turn_To_Face = callback_method("Turn_To_Face")
 
+	obj.Event_Object_In_Range = callback_method("Event_Object_In_Range")
+	obj.Cancel_Event_Object_In_Range = callback_method("Cancel_Event_Object_In_Range")
 
 	obj.Are_Engines_Online = callback_return_method("Are_Engines_Online")
 	function obj.Are_Engines_Online.return_value()
@@ -80,7 +82,7 @@ local function unit_object(tab)
 
 	obj.Get_Planet_Location = callback_return_method("Get_Planet_Location")
 	function obj.Get_Planet_Location.return_value()
-        return game_object { 
+        return game_object {
             name = "DummyPlanet",
             owner = faction {
                 name = "DummyFaction",

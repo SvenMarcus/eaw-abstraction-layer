@@ -19,6 +19,11 @@ local function faction(tab)
         return tab.is_human or false
     end
 
+    obj.Get_Tech_Level = callback_return_method("Get_Tech_Level")
+    function obj.Get_Tech_Level.return_value()
+        return 1
+    end
+
     obj.Make_Ally = callback_method("Make_Ally")
 
     return obj

@@ -3,14 +3,20 @@ local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
 local function utilities()
-    local TestValid = callback_return_method("TestValid")
-    function TestValid.return_value()
-        return false
-    end
+    local Add_Planet_Highlight = callback_method("Add_Planet_Highlight")
+
+    local Hide_Sub_Object = callback_method("Hide_Sub_Object")
+
+    local SuspendAI = callback_method("SuspendAI")
 
     local Get_Game_Mode = callback_return_method("Get_Game_Mode")
     function Get_Game_Mode.return_value()
         return "Galactic"
+    end
+
+    local TestValid = callback_return_method("TestValid")
+    function TestValid.return_value()
+        return false
     end
 
     local function ScriptExit()
@@ -45,7 +51,7 @@ local function utilities()
         Get_Game_Mode = Get_Game_Mode,
         ScriptExit = ScriptExit,
         GameRandom = GameRandom(),
-        DebugMessage = function(...) string.format(...) end
+        DebugMessage = function(...) print(string.format(...)) end
     }
 end
 
