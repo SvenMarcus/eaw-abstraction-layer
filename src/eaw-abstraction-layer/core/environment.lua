@@ -56,6 +56,19 @@ local function prepare_environment()
         env = make_eaw_environment()
     end
 
+    package.loaded.PGAICommands = true
+    package.loaded.PGBase = true
+    package.loaded.PGBaseDefinitions = true
+    package.loaded.PGCommands = true
+    package.loaded.PGDebug = true
+    package.loaded.PGEvents = true
+    package.loaded.PGInterventions = true
+    package.loaded.PGMoveUnits = true
+    package.loaded.PGSpawnUnits = true
+    package.loaded.PGStateMachine = true
+    package.loaded.PGStoryMode = true
+    package.loaded.PGTaskForce = true
+
     insert_into_env(_G, env)
 end
 
@@ -63,6 +76,19 @@ local function reset_environment()
     for k, v in pairs(env) do
         _G[env] = nil
     end
+
+    package.loaded.PGAICommands = nil
+    package.loaded.PGBase = nil
+    package.loaded.PGBaseDefinitions = nil
+    package.loaded.PGCommands = nil
+    package.loaded.PGDebug = nil
+    package.loaded.PGEvents = nil
+    package.loaded.PGInterventions = nil
+    package.loaded.PGMoveUnits = nil
+    package.loaded.PGSpawnUnits = nil
+    package.loaded.PGStateMachine = nil
+    package.loaded.PGStoryMode = nil
+    package.loaded.PGTaskForce = nil
 
     env = make_eaw_environment()
 end
