@@ -71,10 +71,6 @@ Of course you can also set up a similar folder structure manually.
 
 ### Running tests
 
-As of now, the library needs to be used on files that don't have any connection to the base PG Lua files. That means you can neither `require()` a PG Lua file directly nor a file that `require`s a PG Lua file (and so on...) . You will need to organize your code into decoupled modules with minimal dependencies to achieve that.
-
-
-
 `eaw_test_runner` can locate and run all tests in a folder.  Run it in the terminal using:
 
 ```bash
