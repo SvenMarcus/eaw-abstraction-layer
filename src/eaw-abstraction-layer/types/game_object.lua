@@ -2,6 +2,7 @@ local make_type = require "eaw-abstraction-layer.types.type"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
+local arguments = metatables.arguments
 
 -- @usage
 -- game_object {
@@ -24,6 +25,9 @@ local function game_object(tab)
     end
 
     obj.Change_Owner = callback_method("Change_Owner")
+    obj.Change_Owner.expected = arguments {
+        "faction"
+    }
     function obj.Change_Owner.callback(owner)
         tab.owner = owner
     end

@@ -3,6 +3,7 @@ local game_object = require "eaw-abstraction-layer.types.game_object"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
+local arguments = metatables.arguments
 
 local function planet(tab)
 
@@ -10,6 +11,9 @@ local function planet(tab)
     obj.__eaw_type = "planet"
 
     obj.Remove_Planet_Highlight = callback_method("Remove_Planet_Highlight")
+    obj.Remove_Planet_Highlight.expected = arguments {
+        "string"
+    }
 
     obj.Get_Final_Blow_Player = callback_return_method("Get_Final_Blow_Player")
     function obj.Get_Final_Blow_Player.return_value()
