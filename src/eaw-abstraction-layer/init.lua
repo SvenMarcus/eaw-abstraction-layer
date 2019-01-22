@@ -7,6 +7,7 @@ local types = {
     global_value = require "eaw-abstraction-layer.global_value",
     planet = require "eaw-abstraction-layer.types.planet",
     story = require "eaw-abstraction-layer.types.story",
+    task_force = require "eaw-abstraction-layer.types.task_force",
     type = require "eaw-abstraction-layer.types.type",
     unit_object = require "eaw-abstraction-layer.types.unit_object"
 }

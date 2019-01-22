@@ -10,7 +10,9 @@ local callback_return_method = metatables.callback_return_method
 -- }
 local function game_object(tab)
 
-    local obj = setmetatable({}, {
+    local obj = setmetatable({
+        __eaw_type = "game_object"
+    }, {
         __tostring = function(_)
             return tab.name
         end;

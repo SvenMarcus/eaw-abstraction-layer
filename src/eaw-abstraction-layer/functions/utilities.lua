@@ -9,6 +9,18 @@ local function utilities()
 
     local SuspendAI = callback_method("SuspendAI")
 
+    local Create_Thread = callback_method("Create_Thread")
+
+    local EvaluatePerception = callback_return_method("EvaluatePerception")
+    function EvaluatePerception.return_value()
+        return 1
+    end
+
+    local GetCurrentTime = callback_return_method("Get_Current_Time")
+    function GetCurrentTime.return_value()
+        return 0
+    end
+
     local Get_Game_Mode = callback_return_method("Get_Game_Mode")
     function Get_Game_Mode.return_value()
         return "Galactic"
@@ -47,10 +59,13 @@ local function utilities()
     return {
         BlockOnCommand = callback_method("BlockOnCommand");
         Sleep = callback_method("Sleep");
+        Create_Thread = Create_Thread,
         TestValid = TestValid,
+        GetCurrentTime = GetCurrentTime,
         Get_Game_Mode = Get_Game_Mode,
         ScriptExit = ScriptExit,
         GameRandom = GameRandom(),
+        EvaluatePerception = EvaluatePerception,
         DebugMessage = function(...) print(string.format(...)) end
     }
 end

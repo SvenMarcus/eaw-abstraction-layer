@@ -7,7 +7,8 @@ local callback_return_method = metatables.callback_return_method
 
 local function unit_object(tab)
 
-    local obj = game_object(tab)
+	local obj = game_object(tab)
+	obj.__eaw_type = "unit_object"
 
 	obj.Activate_Ability = callback_method("Activate_Ability")
 	obj.Change_Owner = callback_method("Change_Owner")

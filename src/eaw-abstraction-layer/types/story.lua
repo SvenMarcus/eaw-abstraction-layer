@@ -3,7 +3,9 @@ local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
 local function event()
-    local obj = {}
+    local obj = {
+        __eaw_type = "event"
+    }
 
     obj.Set_Event_Parameter = callback_method("Set_Event_Parameter")
     obj.Set_Reward_Parameter = callback_method("Set_Reward_Parameter")
@@ -12,7 +14,9 @@ local function event()
 end
 
 local function plot()
-    local obj = {}
+    local obj = {
+        __eaw_type = "plot"
+    }
     obj.Get_Event = callback_return_method("Get_Event")
     function obj.Get_Event.return_value()
         return event()

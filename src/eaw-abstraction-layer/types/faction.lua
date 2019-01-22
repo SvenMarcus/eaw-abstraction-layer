@@ -3,11 +3,15 @@ local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
 local function faction(tab)
-    local obj = setmetatable({}, {
+    local obj = setmetatable({
+        __eaw_type = "faction"
+    }, {
         __tostring = function(_)
             return tab.name
         end
     })
+
+    obj.Enable_Advisor_Hints = callback_method("Enable_Advisor_Hints")
 
     obj.Get_Faction_Name = callback_return_method("Get_Faction_Name")
     function obj.Get_Faction_Name.return_value()

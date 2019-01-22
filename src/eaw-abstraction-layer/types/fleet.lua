@@ -3,7 +3,9 @@ local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
 
 function fleet()
-    local obj = {}
+    local obj = {
+        __eaw_type = "fleet"
+    }
 
     obj.Get_Contained_Object_Count = callback_return_method("Get_Contained_Object_Count")
     function obj.Get_Contained_Object_Count.return_value()

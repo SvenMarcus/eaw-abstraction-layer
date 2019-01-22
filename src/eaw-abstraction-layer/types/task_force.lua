@@ -1,5 +1,5 @@
 local game_object = require "eaw-abstraction-layer.types.game_object"
-local faction = require "eaw-abstraction-layer.types.faction
+local faction = require "eaw-abstraction-layer.types.faction"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
@@ -10,8 +10,10 @@ local callback_return_method = metatables.callback_return_method
 -- }
 local function task_force(tab)
 
-    local obj = {}
-   
+    local obj = {
+        __eaw_type = "task_force"
+    }
+
     obj.Attack_Move = callback_method("Attack_Move")
     obj.Move_To = callback_method("Move_To")
     obj.Attack_Target = callback_method("Attack_Target")

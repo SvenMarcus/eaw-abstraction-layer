@@ -7,6 +7,7 @@ local callback_return_method = metatables.callback_return_method
 local function planet(tab)
 
     local obj = game_object(tab)
+    obj.__eaw_type = "planet"
 
     obj.Remove_Planet_Highlight = callback_method("Remove_Planet_Highlight")
 
