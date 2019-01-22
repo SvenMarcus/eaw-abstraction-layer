@@ -77,11 +77,11 @@ end
 test["When calling callback_method expecting one of two combinations of two arguments with wrong arguments -> should throw error containing wrong argument"] = function()
     local sut = callback_return_method("sut")
     sut.expected = arguments {
-        { "string", "string" },
+        { "string", "table" },
         { "string", "number" }
     }
 
     test.error_raised(function()
-        sut("str", {})
-    end, "table")
+        sut("str", eaw.types.type("test"))
+    end, "type")
 end
