@@ -1,4 +1,4 @@
-local make_type = require "eaw-abstraction-layer.types.unit_object"
+local make_type = require "eaw-abstraction-layer.types.game_object"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 local callback_return_method = metatables.callback_return_method
