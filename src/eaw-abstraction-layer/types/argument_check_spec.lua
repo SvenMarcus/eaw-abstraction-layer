@@ -1,6 +1,9 @@
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local callback_method = metatables.callback_method
 
+local game_object = require "eaw-abstraction-layer.types.game_object"
+local faction = require "eaw-abstraction-layer.types.faction"
+
 test["Given method expecting number -> when receiving string -> should throw error"] = function()
     local sut = callback_method("sut")
     sut.expected = {
@@ -170,3 +173,22 @@ test["Given method expecting string or (number, table) -> when receiving (number
     sut(0, {})
 end
 
+test["Given method expecting game_object -> when receiving game_object -> should not throw error"] = function()
+    local sut = callback_method("sut")
+    sut.expected = {
+        "game_object"
+    }
+
+    sut({__eaw_type = "game_object"})
+end
+
+test["Given method expecting game_object -> when receiving faction -> should throw error"] = function()
+    local sut = callback_method("sut")
+    sut.expected = {
+        "game_object"
+    }
+
+    test.error_raised(function()
+        sut({__eaw_type = "faction"})
+    end, "Wrong input type")
+end
