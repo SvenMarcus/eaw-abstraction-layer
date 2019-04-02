@@ -1,8 +1,6 @@
 local make_type = require "eaw-abstraction-layer.types.type"
 local metatables = require "eaw-abstraction-layer.core.metatables"
-local callback_method = metatables.callback_method
-local callback_return_method = metatables.callback_return_method
-local arguments = metatables.arguments
+local method = metatables.method
 
 -- @usage
 -- game_object {
@@ -11,21 +9,15 @@ local arguments = metatables.arguments
 -- }
 local function game_object(tab)
 
-    local obj = setmetatable({
-        __eaw_type = "game_object"
-    }, {
-        __tostring = function(_)
-            return tab.name
-        end;
-    })
+    local obj = { __eaw_type = "game_object" }
 
-    obj.Get_Owner = callback_return_method("Get_Owner")
+    obj.Get_Owner = method("Get_Owner")
     function obj.Get_Owner.return_value()
         return tab.owner
     end
 
-    obj.Change_Owner = callback_method("Change_Owner")
-    obj.Change_Owner.expected = arguments {
+    obj.Change_Owner = method("Change_Owner")
+    obj.Change_Owner.expected = {
         "faction"
     }
     function obj.Change_Owner.callback(owner)
@@ -34,7 +26,7 @@ local function game_object(tab)
 
     local type = make_type(tab.name)
 
-    obj.Get_Type = callback_return_method("Get_Type")
+    obj.Get_Type = method("Get_Type")
     function obj.Get_Type.return_value()
         return type
     end

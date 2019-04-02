@@ -37,10 +37,11 @@ end
 local function run(func)
     local g_clone = deep_clone(_G)
 
-    coroutine.wrap(func)()
+    local status, err = pcall(coroutine.wrap(func))
 
     deep_restore(_G, g_clone)
     table_lookup = {}
+    return status, err
 end
 
 return {

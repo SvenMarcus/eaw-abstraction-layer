@@ -1,5 +1,5 @@
 local metatables = require "eaw-abstraction-layer.core.metatables"
-local callback_return_method = metatables.callback_return_method
+local method = metatables.method
 
 local function type(name)
     local obj = setmetatable({
@@ -10,7 +10,7 @@ local function type(name)
         end
     })
 
-    obj.Get_Name = callback_return_method("Get_Name")
+    obj.Get_Name = method("Get_Name")
     function obj.Get_Name.return_value()
         return string.upper(name)
     end;

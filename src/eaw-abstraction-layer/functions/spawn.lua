@@ -1,12 +1,11 @@
 local type = require "eaw-abstraction-layer.types.type"
 local unit_object = require "eaw-abstraction-layer.types.unit_object"
 local metatables = require "eaw-abstraction-layer.core.metatables"
-local callback_return_method = metatables.callback_return_method
-local arguments = metatables.arguments
+local method = metatables.method
 
 local function spawn()
-    local Spawn_Unit = callback_return_method("Spawn_Unit")
-    Spawn_Unit.expected = arguments {
+    local Spawn_Unit = method("Spawn_Unit")
+    Spawn_Unit.expected = {
         {"type", "planet", "faction"},
         {"type", "game_object", "faction"},
         {"type", "unit_object", "faction"}
@@ -24,8 +23,8 @@ local function spawn()
         return { unit }
     end
 
-    local SpawnList = callback_return_method("SpawnList")
-    SpawnList.expected = arguments {
+    local SpawnList = method("SpawnList")
+    SpawnList.expected = {
         { "table", "game_object", "faction", "boolean", "boolean" },
         { "table", "unit_object", "faction", "boolean", "boolean" },
         { "table", "planet", "faction", "boolean", "boolean" }

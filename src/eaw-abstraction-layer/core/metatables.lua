@@ -7,7 +7,7 @@ local function get_type(arg)
 end
 
 local function is_type_mismatch(arg, expected)
-    return get_type(arg) ~= expected
+    return get_type(arg) ~= expected and expected ~= "any"
 end
 
 local function get_expected_type_from_table(candidates, arg_index, arg)
@@ -15,7 +15,7 @@ local function get_expected_type_from_table(candidates, arg_index, arg)
     for expected_index = 1, #candidates do
         expected_arg = candidates[expected_index][arg_index]
 
-        if type(arg) == expected_arg then
+        if not is_type_mismatch(arg, expected_arg) then
             return expected_arg
         end
     end
@@ -31,11 +31,11 @@ local function get_expected_type(candidate, arg_index, arg)
         return expected_arg
 end
 
-local function validate_argument_type(method, arg_index, arg)
-    local expected_arg = get_expected_type(method, arg_index, arg)
+local function validate_argument_type(method, candidates, arg_index, arg)
+    local expected_arg = get_expected_type(candidates, arg_index, arg)
 
     if is_type_mismatch(arg, expected_arg) then
-        error("Wrong input type")
+        error("Wrong input type "..get_type(arg).." for method "..method.func_name)
     end
 end
 
@@ -75,39 +75,20 @@ local function validate_arguments(method, ...)
     local arg
     for arg_index =1, #args do
         arg = args[arg_index]
-        validate_argument_type(candidates, arg_index, arg)
+        validate_argument_type(method, candidates, arg_index, arg)
     end
 end
 
-local function basic_callback_metatable()
+local function method_metatable()
     return {
         __call = function(t, ...)
             t.calls = t.calls + 1
 
             validate_arguments(t, ...)
 
-            if not t.callback then return end
-
-            t.callback(...)
-        end,
-    }
-end
-
-
-local function callback_return_metatable()
-    return {
-        __call = function(t, ...)
-            t.calls = t.calls + 1
-
-            if t.expected then
-                validate_arguments(t, ...)
-            end
-
             local return_value
             if t.return_value then
                 return_value = t.return_value(...)
-            elseif t.func_name then
-                print("Warning! no return value for function " .. t.func_name)
             end
 
             if t.callback then t.callback(...) end
@@ -117,24 +98,38 @@ local function callback_return_metatable()
     }
 end
 
+local function vararg_method_metatable()
+    return {
+        __call = function(t, ...)
+            t.calls = t.calls + 1
 
-local function callback_method(func_name)
+            local return_value
+            if t.return_value then
+                return_value = t.return_value(...)
+            end
+
+            if t.callback then t.callback(...) end
+
+            return return_value
+        end,
+    }
+end
+
+local function method(func_name)
     return setmetatable(
         {func_name = func_name, calls = 0},
-        basic_callback_metatable()
+        method_metatable()
     )
 end
 
-local function callback_return_method(func_name)
+local function vararg_method(func_name)
     return setmetatable(
         {func_name = func_name, calls = 0},
-        callback_return_metatable()
+        vararg_method_metatable()
     )
 end
 
 return {
-    arguments = arguments,
-    optional = optional,
-    callback_method = callback_method,
-    callback_return_method = callback_method
+    method = method,
+    vararg_method = vararg_method
 }

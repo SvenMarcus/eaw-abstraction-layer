@@ -16,5 +16,6 @@ return {
     environment = environment.current_environment,
     types = types,
     init = environment.init,
-    run = environment.run
+    run = environment.run,
+    use_real_errors = environment.use_real_errors
 }

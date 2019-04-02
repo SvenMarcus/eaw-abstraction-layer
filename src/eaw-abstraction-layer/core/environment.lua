@@ -1,13 +1,10 @@
 local sandbox = require "eaw-abstraction-layer.core.sandbox"
 
 local env = nil
-local _G_backup = {}
-
+local real_errors = false
 
 local function insert_into_env(env, tab)
-    for func_name, func in pairs(tab) do
-        env[func_name] = func
-    end
+    for func_name, func in pairs(tab) do env[func_name] = func end
 end
 
 local make_finders = require "eaw-abstraction-layer.functions.finders"
@@ -15,7 +12,6 @@ local make_register_functions = require "eaw-abstraction-layer.functions.registe
 local make_story = require "eaw-abstraction-layer.functions.story"
 local make_utilities = require "eaw-abstraction-layer.functions.utilities"
 local make_spawn = require "eaw-abstraction-layer.functions.spawn"
-
 
 local function make_eaw_environment()
     local env = {}
@@ -33,28 +29,24 @@ end
 local function init(mod_path)
     env = make_eaw_environment()
     if mod_path then
-        local scripts = mod_path.."/Data/Scripts/"
+        local scripts = mod_path .. "/Data/Scripts/"
         local script_folders = {
-            scripts.."AI/",
-            scripts.."Library/",
-            scripts.."Story/",
-            scripts.."GameObject/",
-            scripts.."Evaluators/",
-            scripts.."Miscellaneous/",
-            scripts.."FreeStore/",
-            scripts.."Interventions/"
+            scripts .. "AI/",
+            scripts .. "Library/",
+            scripts .. "Story/",
+            scripts .. "GameObject/",
+            scripts .. "Evaluators/",
+            scripts .. "Miscellaneous/",
+            scripts .. "FreeStore/",
+            scripts .. "Interventions/"
         }
 
-        for _, path in pairs(script_folders) do
-            package.path = package.path..";"..path.."?.lua"
-        end
+        for _, path in pairs(script_folders) do package.path = package.path .. ";" .. path .. "?.lua" end
     end
 end
 
 local function prepare_environment()
-    if not env then
-        env = make_eaw_environment()
-    end
+    if not env then env = make_eaw_environment() end
 
     package.loaded.PGAICommands = true
     package.loaded.PGBase = true
@@ -73,9 +65,7 @@ local function prepare_environment()
 end
 
 local function reset_environment()
-    for k, v in pairs(env) do
-        _G[env] = nil
-    end
+    for k, v in pairs(env) do _G[v] = nil end
 
     package.loaded.PGAICommands = nil
     package.loaded.PGBase = nil
@@ -95,20 +85,37 @@ end
 
 local function run(func, ...)
     prepare_environment()
-    sandbox.run(func, ...)
+    local status, err = sandbox.run(func, ...)
     reset_environment()
+
+    if status then
+        return
+    end
+
+    if real_errors then
+        real_errors = false
+        error(err)
+    end
+
+    print(err)
+end
+
+local function use_real_errors(bool)
+    real_errors = bool
 end
 
 return {
     init = init,
     run = run,
-    current_environment = setmetatable({}, { __index = function(_, k)
-        if not env then
-            env = make_eaw_environment()
-        end
-        return env[k]
-    end,
-    __newindex = function(_, k, v)
-        env[k] = v
-    end})
+    use_real_errors = use_real_errors,
+    current_environment = setmetatable(
+        {},
+        {
+            __index = function(_, k)
+                if not env then env = make_eaw_environment() end
+                return env[k]
+            end,
+            __newindex = function(_, k, v) env[k] = v end
+        }
+    )
 }

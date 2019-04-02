@@ -1,4 +1,5 @@
 allow_defined = true
 globals = {
-    "test"
+    "test",
+    "eaw"
 }
