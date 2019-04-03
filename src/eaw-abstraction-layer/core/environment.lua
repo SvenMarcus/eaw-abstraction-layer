@@ -1,7 +1,17 @@
 local sandbox = require "eaw-abstraction-layer.core.sandbox"
 
-local env = nil
+local env = {state = {}}
 local real_errors = false
+local env_ready = false
+
+local function yellow(str) return "\27[1;33m" .. str .. "\27[0m" end
+local function red(str)    return "\27[1;31m" .. str .. "\27[0m" end
+
+local function warning(msg) print(yellow(msg)) end
+
+local function raise_error(msg, lvl)
+    error(red(msg), lvl)
+end
 
 local function insert_into_env(env, tab)
     for func_name, func in pairs(tab) do env[func_name] = func end
@@ -27,7 +37,9 @@ local function make_eaw_environment()
 end
 
 local function init(mod_path)
-    env = make_eaw_environment()
+    env.state = make_eaw_environment()
+    env_ready = true
+
     if mod_path then
         local scripts = mod_path .. "/Data/Scripts/"
         local script_folders = {
@@ -46,7 +58,7 @@ local function init(mod_path)
 end
 
 local function prepare_environment()
-    if not env then env = make_eaw_environment() end
+    if not env_ready then env.state = make_eaw_environment() end
 
     package.loaded.PGAICommands = true
     package.loaded.PGBase = true
@@ -61,48 +73,33 @@ local function prepare_environment()
     package.loaded.PGStoryMode = true
     package.loaded.PGTaskForce = true
 
-    insert_into_env(_G, env)
+    insert_into_env(_G, env.state)
 end
 
 local function reset_environment()
-    for k, v in pairs(env) do _G[v] = nil end
-
-    package.loaded.PGAICommands = nil
-    package.loaded.PGBase = nil
-    package.loaded.PGBaseDefinitions = nil
-    package.loaded.PGCommands = nil
-    package.loaded.PGDebug = nil
-    package.loaded.PGEvents = nil
-    package.loaded.PGInterventions = nil
-    package.loaded.PGMoveUnits = nil
-    package.loaded.PGSpawnUnits = nil
-    package.loaded.PGStateMachine = nil
-    package.loaded.PGStoryMode = nil
-    package.loaded.PGTaskForce = nil
-
-    env = make_eaw_environment()
+    env.state = make_eaw_environment()
+    env_ready = false
 end
 
 local function run(func, ...)
+    local sb = sandbox.new()
+    sb:backup()
     prepare_environment()
-    local status, err = sandbox.run(func, ...)
+    local status, err = sb:run(func, ...)
     reset_environment()
+    sb:restore()
 
-    if status then
-        return
-    end
+    if status then return end
 
     if real_errors then
         real_errors = false
-        error(err)
+        raise_error(err)
     end
 
-    print(err)
+    warning(err)
 end
 
-local function use_real_errors(bool)
-    real_errors = bool
-end
+local function use_real_errors(bool) real_errors = bool end
 
 return {
     init = init,
@@ -112,10 +109,10 @@ return {
         {},
         {
             __index = function(_, k)
-                if not env then env = make_eaw_environment() end
-                return env[k]
+                if not env_ready then env.state = make_eaw_environment() end
+                return env.state[k]
             end,
-            __newindex = function(_, k, v) env[k] = v end
+            __newindex = function(_, k, v) env.state[k] = v end
         }
     )
 }
