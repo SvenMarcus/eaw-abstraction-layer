@@ -1,1 +1,2 @@
+A = "GLOBAL"
 return "DUMMY"
