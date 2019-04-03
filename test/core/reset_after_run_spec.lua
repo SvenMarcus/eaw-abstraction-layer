@@ -1,7 +1,3 @@
-local eaw = require "eaw-abstraction-layer"
-local assert = require "luassert"
-local spy = require "luassert.spy"
-
 test(
     "When requiring a file inside run -> should not be in package.loaded after run",
     function()
@@ -35,8 +31,7 @@ test(
 
         eaw.init("./examples/Mod")
 
-        local times_called_spawn_unit = 0
-        function env.Spawn_Unit.callback() times_called_spawn_unit = times_called_spawn_unit + 1 end
+        local spawn_unit_spy = spy.on(env, "Spawn_Unit")
 
         eaw.run(function()
             Spawn_Unit(
@@ -54,8 +49,7 @@ test(
             )
         end)
 
-        local expected = 1
-        assert.are.equal(expected, times_called_spawn_unit)
+        assert.spy(spawn_unit_spy).was.called(1)
     end
 )
 
