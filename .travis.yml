@@ -19,7 +19,7 @@ install:
   - luarocks install luacov-coveralls
 
 script:
-  - busted --verbose --coverage
+  - busted $TRAVIS_BUILD_DIR --verbose --coverage
 
 after_success:
   - luacov-coveralls -e $TRAVIS_BUILD_DIR/lua_install
