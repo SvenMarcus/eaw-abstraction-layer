@@ -13,8 +13,7 @@ test(
         local expected = tostring(package.path)
 
         eaw.init(".")
-        eaw.run(function()
-        end)
+        eaw.run(function() end)
 
         assert.are.equal(expected, package.path)
     end

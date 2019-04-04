@@ -99,17 +99,65 @@ local function is_eaw_type(expected_type)
     end
 end
 
-test.register_assert("matches_eaw_type", matches_eaw_type)
-test.register_assert("matches_faction", matches_faction)
-test.register_assert("matches_game_object", matches_game_object)
-test.register_assert("is_eaw_type", is_eaw_type("type"))
-test.register_assert("is_faction", is_eaw_type("faction"))
-test.register_assert("is_fleet", is_eaw_type("fleet"))
-test.register_assert("is_game_object", is_eaw_type("game_object"))
-test.register_assert("is_planet", is_eaw_type("planet"))
-test.register_assert("is_unit_object", is_eaw_type("unit_object"))
+local function b_matches_eaw_type(state, args)
+    local expected = args[1]
+    return function(actual)
+        return matches_eaw_type(expected, actual)
+    end
+end
 
-test.register_assert("is_plot", is_eaw_type("plot"))
-test.register_assert("is_event", is_eaw_type("event"))
+local function b_matches_faction(state, args)
+    local expected = args[1]
+    return function(actual)
+        return matches_faction(expected, actual)
+    end
+end
 
-test.register_assert("is_task_force", is_eaw_type("task_force"))
+local function b_matches_game_object(state, args)
+    local expected = args[1]
+    return function(actual)
+        return matches_game_object(expected, actual)
+    end
+end
+
+local function b_is_eaw_type(expected)
+    return function(state, args)
+        local actual = args[1]
+        return is_eaw_type(expected)(actual)
+    end
+end
+
+local say = require "say"
+local assert = require "luassert"
+
+
+local function make_type_assertion(type_name, func_name)
+    local assert_name = func_name or type_name
+    say:set("assertion."..assert_name..".positive", "Expected EaW Type '"..type_name.."', but got: %s")
+    say:set("assertion."..assert_name..".negative", "Expected to not be EaW Type '"..type_name.."'")
+    assert:register("assertion", assert_name, b_is_eaw_type(type_name), "assertion."..assert_name..".positive", "assertion."..assert_name..".negative")
+end
+
+-- special case 'type', because assert name needs to be different to avoid confusion with built-in type()
+make_type_assertion("type", "eaw_type")
+
+local types = {"faction", "fleet", "game_object", "planet", "unit_object", "plot", "event", "task_force"}
+
+for _, v in pairs(types) do
+    make_type_assertion(v)
+end
+
+-- test.register_assert("matches_eaw_type", matches_eaw_type)
+-- test.register_assert("matches_faction", matches_faction)
+-- test.register_assert("matches_game_object", matches_game_object)
+-- test.register_assert("is_eaw_type", is_eaw_type("type"))
+-- test.register_assert("is_faction", is_eaw_type("faction"))
+-- test.register_assert("is_fleet", is_eaw_type("fleet"))
+-- test.register_assert("is_game_object", is_eaw_type("game_object"))
+-- test.register_assert("is_planet", is_eaw_type("planet"))
+-- test.register_assert("is_unit_object", is_eaw_type("unit_object"))
+
+-- test.register_assert("is_plot", is_eaw_type("plot"))
+-- test.register_assert("is_event", is_eaw_type("event"))
+
+-- test.register_assert("is_task_force", is_eaw_type("task_force"))

@@ -1,5 +1,7 @@
 # Empire at War Abstraction Layer
 
+[![Build Status](https://secure.travis-ci.org/SvenMarcus/eaw-abstraction-layer.png)](http://secure.travis-ci.org/SvenMarcus/eaw-abstraction-layer)
+
 - [Empire at War Abstraction Layer](#empire-at-war-abstraction-layer)
   - [About](#about)
   - [Installation](#installation)
@@ -14,17 +16,15 @@
   - [Writing tests](#writing-tests)
   - [Contributing](#contributing)
 
-
 ## About
 
 The Empire at War Abstraction Layer aims to be a drop in replacement for Empire at War's Lua functions, so Lua modules can be executed without launching the game itself. This not only saves time, but also helps with debugging, since the abstraction layer provides additional functioniality to configure the behavior of EaW's functions. The end goal is to provide a set of functions that can be used together in a unit testing framework. The library ships with `u-test`  (https://github.com/IUdalov/u-test). Lua's most popular testing framework `busted` is unfortunately not compatible at the the current time due to bugs with their handling of global variables, which are essential in EaW modding.
-
 
 ## Installation
 
 Either clone this repository or get it on luarocks using:
 
-```
+```bash
 luarocks install eaw-abstraction-layer
 ```
 
@@ -63,11 +63,7 @@ This will launch a setup routine that asks you for the target location of your t
 
 It will the generate all the necessary folders for you (including all folders in your test project path that don't exist yet) and a file called `config.lua`  in your test project root folder that contains your mod path.
 
-
-
 Of course you can also set up a similar folder structure manually.
-
-
 
 ### Running tests
 
@@ -83,8 +79,6 @@ This command will run a script that provides your test scripts with a few global
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | eaw      | The EaW Abstraction Layer. This will run also run the `eaw.init()` function with the mod path from your `config.lua` file, if present. |
 | test     | The public API of `u-test`                                                                                                             |
-
-
 
 To use the library manually, set the path to your mod folder, `require()` a file and choose an entry function.
 
@@ -118,8 +112,6 @@ All of the following functions can be accessed via the EaW environment:
 local env = eaw.environment
 local the_function = env.the_function_name
 ```
-
-
 
 | Function                             | Default return value                                                                                               |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
@@ -166,16 +158,12 @@ local player = faction {
 }
 ```
 
-
-
 | Method           | Default return value                                         |
 | ---------------- | ------------------------------------------------------------ |
 | Get_Faction_Name | Value of field `name`                                        |
 | Is_Human         | Value of field `is_human` or `false` if field is not present |
 | Make_Ally        | -                                                            |
 | Get_Tech_Level   | `number` 1                                                   |
-
-
 
 **type**
 
@@ -334,8 +322,6 @@ local my_event = event()
 | -------------------- | -------------------- |
 | Set_Event_Parameter  | -                    |
 | Set_Reward_Parameter | -                    |
-
-
 
 ## Configuration
 
