@@ -16,7 +16,7 @@ install:
   - luarocks install busted
 
 script:
-  - busted $TRAVIS_BUILD_DIR --verbose --defer-print
+  - busted
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
