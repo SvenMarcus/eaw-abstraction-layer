@@ -1,4 +1,4 @@
-require "eaw-abstraction-layer.cli.custom_assertions"
+require "eaw-abstraction-layer.test_framework.custom_assertions"
 
 test(
     "When calling assert.is.eaw_type with EaW Type -> should not fail",
