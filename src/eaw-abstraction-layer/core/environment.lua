@@ -64,6 +64,8 @@ end
 local function prepare_environment()
     if not env_ready then env.state = make_eaw_environment() end
 
+    prepare_package_path()
+
     package.loaded.PGAICommands = true
     package.loaded.PGBase = true
     package.loaded.PGBaseDefinitions = true
