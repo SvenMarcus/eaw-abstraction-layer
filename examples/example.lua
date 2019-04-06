@@ -1,7 +1,7 @@
 local eaw = require "eaw-abstraction-layer"
 local configure_environment = require "./examples/configuration"
-
 eaw.init("./examples/Mod")
+
 
 local function test_eaw_module()
     configure_environment()

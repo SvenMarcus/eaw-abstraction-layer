@@ -3,15 +3,15 @@ local sandbox = require "eaw-abstraction-layer.core.sandbox"
 local env = {state = {}}
 local real_errors = false
 local env_ready = false
+local __path_backup = package.path
+local __mod_path
 
 local function yellow(str) return "\27[1;33m" .. str .. "\27[0m" end
-local function red(str)    return "\27[1;31m" .. str .. "\27[0m" end
+local function red(str) return "\27[1;31m" .. str .. "\27[0m" end
 
 local function warning(msg) print(yellow(msg)) end
 
-local function raise_error(msg, lvl)
-    error(red(msg), lvl)
-end
+local function raise_error(msg, lvl) error(red(msg), lvl) end
 
 local function insert_into_env(env, tab)
     for func_name, func in pairs(tab) do env[func_name] = func end
@@ -39,26 +39,32 @@ end
 local function init(mod_path)
     env.state = make_eaw_environment()
     env_ready = true
+    __mod_path = mod_path
+end
 
-    if mod_path then
-        local scripts = mod_path .. "/Data/Scripts/"
-        local script_folders = {
-            scripts .. "AI/",
-            scripts .. "Library/",
-            scripts .. "Story/",
-            scripts .. "GameObject/",
-            scripts .. "Evaluators/",
-            scripts .. "Miscellaneous/",
-            scripts .. "FreeStore/",
-            scripts .. "Interventions/"
-        }
+local function prepare_package_path()
+    if not __mod_path then return end
+    __path_backup = package.path
 
-        for _, path in pairs(script_folders) do package.path = package.path .. ";" .. path .. "?.lua" end
-    end
+    local scripts = __mod_path .. "/Data/Scripts/"
+    local script_folders = {
+        scripts .. "AI/",
+        scripts .. "Library/",
+        scripts .. "Story/",
+        scripts .. "GameObject/",
+        scripts .. "Evaluators/",
+        scripts .. "Miscellaneous/",
+        scripts .. "FreeStore/",
+        scripts .. "Interventions/"
+    }
+
+    for _, path in pairs(script_folders) do package.path = package.path .. ";" .. path .. "?.lua" end
 end
 
 local function prepare_environment()
     if not env_ready then env.state = make_eaw_environment() end
+
+    prepare_package_path()
 
     package.loaded.PGAICommands = true
     package.loaded.PGBase = true
@@ -78,6 +84,7 @@ end
 
 local function reset_environment()
     env.state = make_eaw_environment()
+    package.path = __path_backup
     env_ready = false
 end
 
