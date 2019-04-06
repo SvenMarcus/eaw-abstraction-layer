@@ -1,13 +1,20 @@
 local sandbox = require "eaw-abstraction-layer.core.sandbox"
 
-local env = nil
-local _G_backup = {}
+local env = {state = {}}
+local real_errors = false
+local env_ready = false
+local __path_backup = package.path
+local __mod_path
 
+local function yellow(str) return "\27[1;33m" .. str .. "\27[0m" end
+local function red(str) return "\27[1;31m" .. str .. "\27[0m" end
+
+local function warning(msg) print(yellow(msg)) end
+
+local function raise_error(msg, lvl) error(red(msg), lvl) end
 
 local function insert_into_env(env, tab)
-    for func_name, func in pairs(tab) do
-        env[func_name] = func
-    end
+    for func_name, func in pairs(tab) do env[func_name] = func end
 end
 
 local make_finders = require "eaw-abstraction-layer.functions.finders"
@@ -15,7 +22,6 @@ local make_register_functions = require "eaw-abstraction-layer.functions.registe
 local make_story = require "eaw-abstraction-layer.functions.story"
 local make_utilities = require "eaw-abstraction-layer.functions.utilities"
 local make_spawn = require "eaw-abstraction-layer.functions.spawn"
-
 
 local function make_eaw_environment()
     local env = {}
@@ -31,30 +37,34 @@ local function make_eaw_environment()
 end
 
 local function init(mod_path)
-    env = make_eaw_environment()
-    if mod_path then
-        local scripts = mod_path.."/Data/Scripts/"
-        local script_folders = {
-            scripts.."AI/",
-            scripts.."Library/",
-            scripts.."Story/",
-            scripts.."GameObject/",
-            scripts.."Evaluators/",
-            scripts.."Miscellaneous/",
-            scripts.."FreeStore/",
-            scripts.."Interventions/"
-        }
+    env.state = make_eaw_environment()
+    env_ready = true
+    __mod_path = mod_path
+end
 
-        for _, path in pairs(script_folders) do
-            package.path = package.path..";"..path.."?.lua"
-        end
-    end
+local function prepare_package_path()
+    if not __mod_path then return end
+    __path_backup = package.path
+
+    local scripts = __mod_path .. "/Data/Scripts/"
+    local script_folders = {
+        scripts .. "AI/",
+        scripts .. "Library/",
+        scripts .. "Story/",
+        scripts .. "GameObject/",
+        scripts .. "Evaluators/",
+        scripts .. "Miscellaneous/",
+        scripts .. "FreeStore/",
+        scripts .. "Interventions/"
+    }
+
+    for _, path in pairs(script_folders) do package.path = package.path .. ";" .. path .. "?.lua" end
 end
 
 local function prepare_environment()
-    if not env then
-        env = make_eaw_environment()
-    end
+    if not env_ready then env.state = make_eaw_environment() end
+
+    prepare_package_path()
 
     package.loaded.PGAICommands = true
     package.loaded.PGBase = true
@@ -69,46 +79,47 @@ local function prepare_environment()
     package.loaded.PGStoryMode = true
     package.loaded.PGTaskForce = true
 
-    insert_into_env(_G, env)
+    insert_into_env(_G, env.state)
 end
 
 local function reset_environment()
-    for k, v in pairs(env) do
-        _G[env] = nil
-    end
-
-    package.loaded.PGAICommands = nil
-    package.loaded.PGBase = nil
-    package.loaded.PGBaseDefinitions = nil
-    package.loaded.PGCommands = nil
-    package.loaded.PGDebug = nil
-    package.loaded.PGEvents = nil
-    package.loaded.PGInterventions = nil
-    package.loaded.PGMoveUnits = nil
-    package.loaded.PGSpawnUnits = nil
-    package.loaded.PGStateMachine = nil
-    package.loaded.PGStoryMode = nil
-    package.loaded.PGTaskForce = nil
-
-    env = make_eaw_environment()
+    env.state = make_eaw_environment()
+    package.path = __path_backup
+    env_ready = false
 end
 
 local function run(func, ...)
+    local sb = sandbox.new()
+    sb:backup()
     prepare_environment()
-    sandbox.run(func, ...)
+    local status, err = sb:run(func, ...)
     reset_environment()
+    sb:restore()
+
+    if status then return end
+
+    if real_errors then
+        real_errors = false
+        raise_error(err)
+    end
+
+    warning(err)
 end
+
+local function use_real_errors(bool) real_errors = bool end
 
 return {
     init = init,
     run = run,
-    current_environment = setmetatable({}, { __index = function(_, k)
-        if not env then
-            env = make_eaw_environment()
-        end
-        return env[k]
-    end,
-    __newindex = function(_, k, v)
-        env[k] = v
-    end})
+    use_real_errors = use_real_errors,
+    current_environment = setmetatable(
+        {},
+        {
+            __index = function(_, k)
+                if not env_ready then env.state = make_eaw_environment() end
+                return env.state[k]
+            end,
+            __newindex = function(_, k, v) env.state[k] = v end
+        }
+    )
 }

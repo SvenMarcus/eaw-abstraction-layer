@@ -1,24 +1,31 @@
-local table_lookup = {}
+local sandbox = {}
 
-local function deep_restore(tab, backup)
-    table_lookup[tab] = true
+function sandbox.new()
+    local self = setmetatable({}, {__index = sandbox})
+    self.table_lookup = {}
+    self.__backup = {}
+    return self
+end
+
+function sandbox:deep_restore(tab, backup)
+    self.table_lookup[tab] = true
     for k, v in pairs(tab) do
         if backup[k] == nil then
             tab[k] = nil
-        elseif type(v) == "table" and not table_lookup[v] then
-            deep_restore(v, backup[k])
+        elseif type(v) == "table" and not self.table_lookup[v] then
+            self:deep_restore(v, backup[k])
         elseif not type(v) == "table" then
             tab[k] = backup[k]
         end
     end
 end
 
-local function clone_helper(tab)
+function sandbox:clone_helper(tab)
     local clone = {}
-    table_lookup[tab] = true
+    self.table_lookup[tab] = true
     for k, v in pairs(tab) do
-        if type(v) == "table" and not table_lookup[v] then
-            clone[k] = clone_helper(v)
+        if type(v) == "table" and not self.table_lookup[v] then
+            clone[k] = self:clone_helper(v)
         else
             clone[k] = v
         end
@@ -27,22 +34,25 @@ local function clone_helper(tab)
     return clone
 end
 
-local function deep_clone(tab)
-    local env_clone = clone_helper(tab)
-    table_lookup = {}
+function sandbox:deep_clone(tab)
+    local env_clone = self:clone_helper(tab)
+    self.table_lookup = {}
     return env_clone
 end
 
-
-local function run(func)
-    local g_clone = deep_clone(_G)
-
-    coroutine.wrap(func)()
-
-    deep_restore(_G, g_clone)
-    table_lookup = {}
+function sandbox:backup()
+    self.__backup = self:deep_clone(_G)
 end
 
-return {
-    run = run
-}
+function sandbox:restore()
+    self:deep_restore(_G, self.__backup)
+    self.table_lookup = {}
+end
+
+
+function sandbox:run(func)
+    local status, err = pcall(coroutine.wrap(func))
+    return status, err
+end
+
+return sandbox

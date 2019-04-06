@@ -1,0 +1,8 @@
+return {
+    default = {
+        ROOT = {"test"},
+        ["helper"] = "test/environment_setup.lua",
+        ["pattern"] = '_spec.lua',
+        ["defer-print"] = true
+    }
+}

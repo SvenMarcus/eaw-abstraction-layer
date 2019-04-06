@@ -1,5 +1,3 @@
-local test = require "eaw-abstraction-layer.cli.u-test"
-
 local function wrong_type_message(expected_type, actual)
     local msg = type(actual)
     if actual.Get_Type then
@@ -99,17 +97,11 @@ local function is_eaw_type(expected_type)
     end
 end
 
-test.register_assert("matches_eaw_type", matches_eaw_type)
-test.register_assert("matches_faction", matches_faction)
-test.register_assert("matches_game_object", matches_game_object)
-test.register_assert("is_eaw_type", is_eaw_type("type"))
-test.register_assert("is_faction", is_eaw_type("faction"))
-test.register_assert("is_fleet", is_eaw_type("fleet"))
-test.register_assert("is_game_object", is_eaw_type("game_object"))
-test.register_assert("is_planet", is_eaw_type("planet"))
-test.register_assert("is_unit_object", is_eaw_type("unit_object"))
+return {
+    is_eaw_type = is_eaw_type,
+    matches_eaw_type = matches_eaw_type,
+    matches_game_object = matches_game_object,
+    matches_faction = matches_faction
+}
 
-test.register_assert("is_plot", is_eaw_type("plot"))
-test.register_assert("is_event", is_eaw_type("event"))
 
-test.register_assert("is_task_force", is_eaw_type("task_force"))
