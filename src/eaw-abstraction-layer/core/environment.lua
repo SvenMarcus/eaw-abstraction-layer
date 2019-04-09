@@ -1,4 +1,6 @@
 local sandbox = require "eaw-abstraction-layer.core.sandbox"
+local game_object = require "eaw-abstraction-layer.types.game_object"
+local faction = require "eaw-abstraction-layer.types.faction"
 
 local env = {state = {}}
 local real_errors = false
@@ -6,8 +8,8 @@ local env_ready = false
 local __path_backup = package.path
 local __mod_path
 
-local function yellow(str) return "\27[1;33m" .. str .. "\27[0m" end
-local function red(str) return "\27[1;31m" .. str .. "\27[0m" end
+local function yellow(str) return "\27[1;33m" .. tostring(str) .. "\27[0m" end
+local function red(str) return "\27[1;31m" .. tostring(str) .. "\27[0m" end
 
 local function warning(msg) print(yellow(msg)) end
 
@@ -31,6 +33,18 @@ local function make_eaw_environment()
     insert_into_env(env, make_story())
     insert_into_env(env, make_utilities())
     insert_into_env(env, make_spawn())
+    insert_into_env(env, {
+        OnEnter = 0,
+        OnUpdate = 1,
+        OnExit = 2,
+        Object = game_object {
+            name = "Default_Object",
+            owner = faction {
+                name = "Default_Faction",
+                is_human = true
+            }
+        }
+    })
 
     env.GlobalValue = require "eaw-abstraction-layer.global_value"
     return env

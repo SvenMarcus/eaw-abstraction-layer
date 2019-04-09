@@ -13,6 +13,7 @@ local function utilities()
     --TODO: the first argument of BlockOnCommand is a method call, how can we check this?
     local BlockOnCommand = method("BlockOnCommand")
     BlockOnCommand.expected = {
+        {},
         {"any"},
         {"any", "number"},
         {"any", "number", "function"}
@@ -76,14 +77,18 @@ local function utilities()
 
     -- GameRandom is a special case. It can be called as a function or as an object with the method GetFloat()
     local function GameRandom()
+        local game_random_method = method("GameRandom")
+
         local random_mt = {
-            __call = method("Game_Random")
+            __call = function(t, ...)
+                return game_random_method(...)
+            end
         }
-        random_mt.__call.expected = {
+        game_random_method.expected = {
             "number", "number"
         }
 
-        function random_mt.__call.return_value(min, max)
+        function game_random_method.return_value(min, max)
             return min
         end
 

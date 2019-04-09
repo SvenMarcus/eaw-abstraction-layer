@@ -1,6 +1,4 @@
 local game_object = require "eaw-abstraction-layer.types.game_object"
-local faction = require "eaw-abstraction-layer.types.faction"
-local planet = require "eaw-abstraction-layer.types.planet"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local method = metatables.method
 
@@ -17,32 +15,15 @@ local function unit_object(tab)
 		{"string", "unit_object"}
 	}
 
-	obj.Change_Owner = method("Change_Owner")
-	obj.Change_Owner.expected = {
-		"faction"
-	}
-
 	obj.Cinematic_Hyperspace_In = method("Cinematic_Hyperspace_In")
 	obj.Cinematic_Hyperspace_In.expected = {
 		"number"
-	}
-
-	obj.Despawn = method("Despawn")
-
-	obj.Enable_Behavior = method("Enable_Behavior")
-	obj.Enable_Behavior.expected = {
-		"number", "boolean"
 	}
 
 	obj.Face_Immediate = method("Face_Immediate")
 	obj.Face_Immediate.expected = {
 		{"game_object"},
 		{"unit_object"}
-	}
-
-	obj.Hide = method("Hide")
-	obj.Hide.expected = {
-		"boolean"
 	}
 
 	obj.In_End_Cinematic = method("In_End_Cinematic")
@@ -55,11 +36,6 @@ local function unit_object(tab)
 	obj.Override_Max_Speed = method("Override_Max_Speed")
 	obj.Override_Max_Speed.expected = {
 		"number"
-	}
-
-	obj.Play_Animation = method("Play_Animation")
-	obj.Play_Animation.expected = {
-		"string", "boolean", "number"
 	}
 
 	obj.Prevent_AI_Usage = method("Prevent_AI_Usage")
@@ -159,17 +135,6 @@ local function unit_object(tab)
 		return 1.0
 	end
 
-	obj.Get_Parent_Object = method("Get_Parent_Object")
-	function obj.Get_Parent_Object.return_value()
-		return game_object {
-			name = "DummyObject",
-			owner = faction {
-                name = "DummyFaction",
-                is_human = false
-            }
-		}
-	end
-
 	obj.Get_Shield = method("Get_Shield")
 	function obj.Get_Shield.return_value()
 		return 1.0
@@ -202,18 +167,7 @@ local function unit_object(tab)
 		return false
 	end
 
-	obj.Get_Planet_Location = method("Get_Planet_Location")
-	function obj.Get_Planet_Location.return_value()
-        return planet {
-            name = "DummyPlanet",
-            owner = faction {
-                name = "DummyFaction",
-                is_human = false
-            }
-        }
-	end
-
-	obj.Get_Position = method("Get_Position")
+	
 
     return obj
 end

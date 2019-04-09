@@ -56,7 +56,7 @@ local framework = framework_choices[tonumber(io.read())]
 
 local config_str = [[
 eaw = require "eaw-abstraction-layer"
-eaw.use_real_errors(false)
+eaw.use_real_errors(true)
 eaw.init(]] .. mod_path .. ")"
 
 if framework then config_str = config_str .. "\n" .. framework end

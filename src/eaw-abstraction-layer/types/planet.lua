@@ -1,10 +1,10 @@
 local faction = require "eaw-abstraction-layer.types.faction"
-local game_object = require "eaw-abstraction-layer.types.game_object"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local method = metatables.method
 
 
 local function planet(tab)
+    local game_object = require "eaw-abstraction-layer.types.game_object"
 
     local obj = game_object(tab)
     obj.__eaw_type = "planet"

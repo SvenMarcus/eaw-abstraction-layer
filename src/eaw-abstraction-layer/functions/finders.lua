@@ -83,6 +83,7 @@ local function finders()
         Find_First_Object = Find_First_Object,
         Find_All_Objects_Of_Type = Find_All_Objects_Of_Type,
         Find_Nearest = Find_Nearest,
+        Find_Path = Find_Path,
         FindPlanet = FindPlanet,
         Find_Player = Find_Player,
         Find_Object_Type = Find_Object_Type,
