@@ -113,7 +113,6 @@ local function run(func, ...)
     if status then return end
 
     if real_errors then
-        real_errors = false
         raise_error(err)
     end
 

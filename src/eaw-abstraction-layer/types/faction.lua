@@ -20,6 +20,11 @@ local function faction(tab)
         return string.upper(tab.name)
     end
 
+    obj.Get_ID = method("Get_ID")
+    function obj.Get_ID.return_value()
+        return 1
+    end
+
     obj.Is_Human = method("Is_Human")
     function obj.Is_Human.return_value()
         return tab.is_human or false

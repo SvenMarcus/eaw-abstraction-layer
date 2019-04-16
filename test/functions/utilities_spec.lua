@@ -94,3 +94,27 @@ test(
         )
     end
 )
+
+test(
+    "When calling Assemble_Fleet with valid arguments -> should not throw error",
+    function()
+        eaw.environment.Assemble_Fleet({})
+    end
+)
+
+test(
+    "When calling Assemble_Fleet with valid arguments -> should return fleet",
+    function()
+        local actual = eaw.environment.Assemble_Fleet({})
+        assert.is.fleet(actual)
+    end
+)
+
+test(
+    "When calling Assemble_Fleet with invalid arguments -> should throw error",
+    function()
+        assert.has.errors(function()
+            eaw.environment.Assemble_Fleet(0)
+        end)
+    end
+)

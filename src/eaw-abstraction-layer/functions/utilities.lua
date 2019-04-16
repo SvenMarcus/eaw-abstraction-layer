@@ -2,6 +2,8 @@ local metatables = require "eaw-abstraction-layer.core.metatables"
 local method = metatables.method
 local vararg_method = metatables.vararg_method
 
+local fleet = require "eaw-abstraction-layer.types.fleet"
+
 local function utilities()
 
     --TODO: verify signature
@@ -9,6 +11,15 @@ local function utilities()
     Add_Planet_Highlight.expected = {
         {"planet", "string"}
     }
+
+    local Assemble_Fleet = method("Assemble_Fleet")
+    Assemble_Fleet.expected = {
+        "table"
+    }
+
+    function Assemble_Fleet.return_value()
+        return fleet()
+    end
 
     --TODO: the first argument of BlockOnCommand is a method call, how can we check this?
     local BlockOnCommand = method("BlockOnCommand")
@@ -104,13 +115,14 @@ local function utilities()
 
     return {
         Add_Planet_Highlight = Add_Planet_Highlight,
-        BlockOnCommand = BlockOnCommand;
+        Assemble_Fleet = Assemble_Fleet,
+        BlockOnCommand = BlockOnCommand,
         Create_Thread = Create_Thread,
         EvaluatePerception = EvaluatePerception,
         GetCurrentTime = GetCurrentTime,
         Get_Game_Mode = Get_Game_Mode,
         Hide_Sub_Object = Hide_Sub_Object,
-        Sleep = Sleep;
+        Sleep = Sleep,
         Suspend_AI = Suspend_AI,
         TestValid = TestValid,
         ScriptExit = ScriptExit,
