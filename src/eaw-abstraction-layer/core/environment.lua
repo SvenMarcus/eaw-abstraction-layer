@@ -24,6 +24,7 @@ local make_register_functions = require "eaw-abstraction-layer.functions.registe
 local make_story = require "eaw-abstraction-layer.functions.story"
 local make_utilities = require "eaw-abstraction-layer.functions.utilities"
 local make_spawn = require "eaw-abstraction-layer.functions.spawn"
+local make_state_machine = require "eaw-abstraction-layer.functions.state_machine"
 
 local function make_eaw_environment()
     local env = {}
@@ -33,6 +34,7 @@ local function make_eaw_environment()
     insert_into_env(env, make_story())
     insert_into_env(env, make_utilities())
     insert_into_env(env, make_spawn())
+    insert_into_env(env, make_state_machine())
     insert_into_env(env, {
         OnEnter = 0,
         OnUpdate = 1,
