@@ -1,6 +1,8 @@
+local thread = require "eaw-abstraction-layer.types.thread"
 local metatables = require "eaw-abstraction-layer.core.metatables"
 local method = metatables.method
 local vararg_method = metatables.vararg_method
+
 
 local fleet = require "eaw-abstraction-layer.types.fleet"
 
@@ -32,6 +34,9 @@ local function utilities()
 
     --TODO: Create_Thread can take any amount of additional arguments, we need real vararg support to do that
     local Create_Thread = vararg_method("Create_Thread")
+    function Create_Thread.return_value()
+        return thread()
+    end
 
     local EvaluatePerception = method("EvaluatePerception")
     EvaluatePerception.expected = {

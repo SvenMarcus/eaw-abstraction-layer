@@ -21,22 +21,17 @@ test(
 test(
     "When calling BlockOnCommand with valid arguments -> should not fail",
     function()
-        local obj = eaw.types.unit_object {name = "Dummy"}
+        local obj = eaw.types.unit_object{name = "Dummy"}
         eaw.environment.BlockOnCommand(obj.Despawn())
         eaw.environment.BlockOnCommand(obj.Despawn(), 5)
-        eaw.environment.BlockOnCommand(
-            obj.Despawn(),
-            5,
-            function()
-            end
-        )
+        eaw.environment.BlockOnCommand(obj.Despawn(), 5, function() end)
     end
 )
 
 test(
     "When calling Add_Planet_Highlight with valid arguments -> should not fail",
     function()
-        local p = eaw.types.planet {name = "Dummy"}
+        local p = eaw.types.planet{name = "Dummy"}
         eaw.environment.Add_Planet_Highlight(p, "highlight")
     end
 )
@@ -44,34 +39,29 @@ test(
 test(
     "When calling Add_Planet_Highlight with invalid arguments -> should fail",
     function()
-        assert.has.errors(
-            function()
-                eaw.environment.Add_Planet_Highlight("", "highlight")
-            end
-        )
+        assert.has.errors(function()
+            eaw.environment.Add_Planet_Highlight("", "highlight")
+        end)
 
-        assert.has.errors(
-            function()
-                local p = eaw.types.planet {name = "Dummy"}
-                eaw.environment.Add_Planet_Highlight(p, 0)
-            end
-        )
+        assert.has.errors(function()
+            local p = eaw.types.planet{name = "Dummy"}
+            eaw.environment.Add_Planet_Highlight(p, 0)
+        end)
     end
 )
 
 test(
     "When calling EvaluatePerception with valid arguments -> should return 1",
     function()
-        local actual = eaw.environment.EvaluatePerception("Perception", eaw.types.faction {name = "Dummy"})
+        local actual = eaw.environment.EvaluatePerception("Perception", eaw.types.faction{name = "Dummy"})
 
         local expected = 1
         assert.are.equal(expected, actual)
 
-        actual =
-            eaw.environment.EvaluatePerception(
+        actual = eaw.environment.EvaluatePerception(
             "Perception",
-            eaw.types.faction {name = "Dummy"},
-            eaw.types.game_object {name = "Dumy"}
+            eaw.types.faction{name = "Dummy"},
+            eaw.types.game_object{name = "Dumy"}
         )
 
         assert.are.equal(expected, actual)
@@ -81,25 +71,19 @@ test(
 test(
     "When calling EvaluatePerception with invalid arguments -> should throw error",
     function()
-        assert.has.errors(
-            function()
-                eaw.environment.EvaluatePerception(0, eaw.types.faction {name = "Dummy"})
-            end
-        )
+        assert.has.errors(function()
+            eaw.environment.EvaluatePerception(0, eaw.types.faction{name = "Dummy"})
+        end)
 
-        assert.has.errors(
-            function()
-                eaw.environment.EvaluatePerception("Perception", 0)
-            end
-        )
+        assert.has.errors(function()
+            eaw.environment.EvaluatePerception("Perception", 0)
+        end)
     end
 )
 
 test(
     "When calling Assemble_Fleet with valid arguments -> should not throw error",
-    function()
-        eaw.environment.Assemble_Fleet({})
-    end
+    function() eaw.environment.Assemble_Fleet({}) end
 )
 
 test(
@@ -113,8 +97,15 @@ test(
 test(
     "When calling Assemble_Fleet with invalid arguments -> should throw error",
     function()
-        assert.has.errors(function()
-            eaw.environment.Assemble_Fleet(0)
-        end)
+        assert.has.errors(function() eaw.environment.Assemble_Fleet(0) end)
+    end
+)
+
+test(
+    "When calling Create_Thread -> should return thread",
+    function()
+        local actual = eaw.environment.Create_Thread("Func_Name")
+
+        assert.is.thread(actual)
     end
 )

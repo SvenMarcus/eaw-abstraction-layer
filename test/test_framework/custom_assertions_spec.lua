@@ -2,13 +2,13 @@ require "eaw-abstraction-layer.test_framework.custom_assertions"
 
 test(
     "When calling assert.is.eaw_type with EaW Type -> should not fail",
-    function() assert.is.eaw_type(eaw.types.type("Dummy")) end
+    function() assert.is.eaw_object_type(eaw.types.type("Dummy")) end
 )
 
 test(
     "When calling assert.is_not.eaw_type with EaW Type -> should throw error",
     function()
-        assert.has_errors(function() assert.is_not.eaw_type(eaw.types.type("Dummy")) end)
+        assert.has_errors(function() assert.is_not.eaw_object_type(eaw.types.type("Dummy")) end)
     end
 )
 

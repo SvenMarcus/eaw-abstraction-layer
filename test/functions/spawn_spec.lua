@@ -8,8 +8,7 @@ test(
         )
 
         assert.is_true(type(actual) == "table")
-        -- TODO: busted migration
-        -- test.is_unit_object(actual[1])
+        assert.is.unit_object(actual[1])
     end
 )
 
@@ -24,8 +23,7 @@ test(
         )
 
         local actual = spawned[1].Get_Type()
-        -- TODO: busted migration
-        -- test.matches_eaw_type(expected, actual)
+        assert.are.equal(string.upper("Expected_Type"), actual.Get_Name())
     end
 )
 
@@ -55,7 +53,18 @@ test(
         )
 
         local actual = spawned[1].Get_Owner()
-        -- TODO: busted migration
-        -- test.matches_faction(expected, actual)
+        assert.are.equal(expected, actual)
+    end
+)
+
+test(
+    "When calling SpawnList with table, planet, nil, boolean, boolean -> should fail",
+    function()
+        assert.has.errors(function()
+            -- eaw.environment.SpawnList({}, eaw.types.planet {name = "Coruscant"}, nil, true, true)
+            eaw.run(function()
+                SpawnList({}, FindPlanet("Bla"), nil, true, true)
+            end)
+        end)
     end
 )

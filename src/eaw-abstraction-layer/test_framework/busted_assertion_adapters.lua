@@ -49,9 +49,9 @@ return {
         end
 
         -- special case 'type', because assert name needs to be different to avoid confusion with built-in type()
-        make_type_assertion("type", "eaw_type")
+        make_type_assertion("type", "eaw_object_type")
 
-        local types = {"faction", "fleet", "game_object", "planet", "unit_object", "plot", "event", "task_force"}
+        local types = {"faction", "fleet", "game_object", "planet", "unit_object", "plot", "event", "task_force", "thread"}
 
         for _, v in pairs(types) do
             make_type_assertion(v)

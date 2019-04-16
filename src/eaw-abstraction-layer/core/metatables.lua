@@ -82,8 +82,6 @@ end
 local function method_metatable()
     return {
         __call = function(t, ...)
-            t.calls = t.calls + 1
-
             validate_arguments(t, ...)
 
             local return_value

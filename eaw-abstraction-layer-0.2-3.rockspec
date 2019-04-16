@@ -43,6 +43,7 @@ build = {
       ["eaw-abstraction-layer.types.planet"] = "src/eaw-abstraction-layer/types/planet.lua",
       ["eaw-abstraction-layer.types.story"] = "src/eaw-abstraction-layer/types/story.lua",
       ["eaw-abstraction-layer.types.task_force"] = "src/eaw-abstraction-layer/types/task_force.lua",
+      ["eaw-abstraction-layer.types.thread"] = "src/eaw-abstraction-layer/types/thread.lua",
       ["eaw-abstraction-layer.types.type"] = "src/eaw-abstraction-layer/types/type.lua",
       ["eaw-abstraction-layer.types.unit_object"] = "src/eaw-abstraction-layer/types/unit_object.lua"
    },
