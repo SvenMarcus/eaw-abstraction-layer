@@ -14,7 +14,15 @@ local function event()
         { "number", "unit_object" },
         { "number", "planet" }
     }
+
     obj.Set_Reward_Parameter = method("Set_Reward_Parameter")
+    obj.Set_Reward_Parameter.expected = {
+        { "number", "string" },
+        { "number", "number" },
+        { "number", "game_object" },
+        { "number", "unit_object" },
+        { "number", "planet" }
+    }
 
     return obj
 end
