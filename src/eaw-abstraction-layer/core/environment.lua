@@ -78,8 +78,6 @@ local function prepare_package_path()
 end
 
 local function prepare_environment()
-    if not env_ready then env.state = make_eaw_environment() end
-
     prepare_package_path()
 
     package.loaded.PGAICommands = true
