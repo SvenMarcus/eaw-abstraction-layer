@@ -39,6 +39,16 @@ local function faction(tab)
     obj.Make_Ally.expected = {
         "faction"
     }
+    
+    obj.Get_Difficulty = method("Get_Difficulty")
+    function obj.Get_Difficulty.return_value()
+        return tab.difficulty or "Easy"
+    end
+    
+    obj.Give_Money = method("Give_Money")
+    obj.Give_Money.expected = {
+        "number"
+    }
 
     return obj
 end

@@ -9,9 +9,9 @@ test(
 )
 
 test(
-    "When calling GameRandom.GetFloat() -> should return 0",
+    "When calling GameRandom.Get_Float() -> should return 0",
     function()
-        local actual = eaw.environment.GameRandom.GetFloat()
+        local actual = eaw.environment.GameRandom.Get_Float()
 
         local expected = 0
         assert.are.equal(expected, actual)
