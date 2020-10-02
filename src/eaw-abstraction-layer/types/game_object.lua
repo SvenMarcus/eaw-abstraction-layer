@@ -74,6 +74,11 @@ local function game_object(tab)
 		"string", "boolean", "number"
 	}
 
+    obj.Is_Valid = method("Is_Valid")
+    function obj.Is_Valid.return_value()
+        return tab.valid
+    end
+
     return obj
 end
 

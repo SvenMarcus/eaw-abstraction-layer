@@ -69,7 +69,7 @@ local function validate_arguments(method, ...)
     local candidates = get_argument_candidates(method, args)
 
     if expects_input(method) and #candidates == 0 then
-        error("No matching signature for given argument count")
+        error("No matching signature of method " .. method.func_name .. " for given argument count")
     end
 
     local arg

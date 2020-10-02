@@ -70,7 +70,8 @@ local function unit_object(tab)
 	obj.Attack_Move = method("Attack_Move")
 	obj.Attack_Move.expected = {
 		{"game_object"},
-		{"unit_object"}
+		{"unit_object"},
+		{"table", "unit_object"}
 	}
 
 	obj.Attack_Target = method("Attack_Target")
@@ -166,6 +167,18 @@ local function unit_object(tab)
 	function obj.Is_Under_Effects_Of_Ability.return_value()
 		return false
 	end
+  
+  obj.Is_Category = method("Is_Category")
+	obj.Is_Category.expected = {
+		"string"
+	}
+  
+  function obj.Is_Category.return_value(category)
+    if tab.category then
+      return tab.category == category
+    end
+    return false
+  end
 
 	
 

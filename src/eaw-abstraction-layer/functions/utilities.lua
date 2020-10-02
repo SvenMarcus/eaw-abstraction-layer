@@ -110,12 +110,20 @@ local function utilities()
 
         local obj = setmetatable({}, random_mt)
 
-        obj.GetFloat = method("GetFloat")
-        function obj.GetFloat.return_value()
+        obj.Get_Float = method("Get_Float")
+        function obj.Get_Float.return_value()
             return 0
         end
 
         return obj
+    end
+    
+    local Cull_Unit_List = method("Cull_Unit_List")
+    Cull_Unit_List.expected = {
+        "table"
+    }
+    function Cull_Unit_List.return_value(list)
+        return list
     end
 
     return {
@@ -129,10 +137,14 @@ local function utilities()
         Hide_Sub_Object = Hide_Sub_Object,
         Sleep = Sleep,
         Suspend_AI = Suspend_AI,
+        Cull_Unit_List = Cull_Unit_List,
         TestValid = TestValid,
         ScriptExit = ScriptExit,
         GameRandom = GameRandom(),
-        DebugMessage = function(...) print(string.format(...)) end
+        DebugMessage = function(...) print(string.format(...)) end,
+        _CustomScriptMessage = function(file, ...) print(string.format(...)) end,
+        OutputDebug = function (...) print(string.format(...)) end,
+        MessageBox = function(...) error(string.format(...)) end
     }
 end
 
